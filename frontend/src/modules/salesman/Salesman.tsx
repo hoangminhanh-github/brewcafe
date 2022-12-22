@@ -6,7 +6,6 @@ import Header from "./components/Header/Header";
 const Salesman = () => {
   const user: any = useSelector((state: IAppState) => state.auth.user);
   const isValidUser = user.permission == "Admin" || user.permission == "Vendor";
-  console.log(124);
   return (
     <>
       {isValidUser ? (

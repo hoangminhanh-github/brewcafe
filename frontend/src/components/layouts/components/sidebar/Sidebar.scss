@@ -1,0 +1,122 @@
+@use "../../../../scss/" as *;
+$margin-default: 10px;
+// margin-left: $margin-default;
+.sidebar {
+  &-text {
+    background-color: #453728;
+    color: $text-white;
+    width: 100%;
+    height: 40px;
+    padding-top: 10px;
+    span {
+      margin-left: $margin-default;
+    }
+  }
+  &-cate {
+    border: 0.7px solid #000;
+    ul {
+      margin-left: $margin-default;
+      li {
+        padding: 14px 0;
+        border-bottom: 1px solid #ccc;
+        a {
+          font-size: 14px;
+          font-weight: 200;
+        }
+        &:hover a {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+  &-filter {
+    border: 0.8px solid #000;
+    margin: 12px 0;
+    &__content {
+      margin-top: 20px;
+      margin-left: $margin-default;
+      & > p {
+        font-style: italic;
+        padding: 8px 0;
+      }
+      &--filter {
+        .filter-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          h4 {
+            color: #7bbd43;
+          }
+          p {
+            margin-right: 10px;
+            float: right;
+            color: #cc0000;
+            line-height: 20px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+        .filter-body {
+          li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            margin: 8px 0;
+            &:hover {
+              cursor: pointer;
+            }
+            .icons {
+              font-size: 18px;
+              color: #ed5e5e;
+            }
+          }
+        }
+      }
+      &-input {
+        position: relative;
+        input {
+          outline: 1px solid #000;
+          width: 95%;
+          height: 30px;
+          padding-left: 10px;
+        }
+        & > .icon {
+          position: absolute;
+          right: 26px;
+          top: 5px;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  &-img {
+    width: 100%;
+  }
+}
+
+.sidebar-filter__bands {
+  display: flex;
+  flex-direction: column;
+  height: 240px;
+  padding-top: 20px;
+  overflow-y: scroll;
+  margin: 20px 0;
+  label {
+    height: 30px;
+    display: flex;
+    gap: 10px;
+  }
+}
+// 240167
+.sidebar-filter__price {
+  display: flex;
+  flex-direction: column;
+  label {
+    height: 30px;
+    display: flex;
+    gap: 10px;
+  }
+  margin-bottom: 10px;
+}

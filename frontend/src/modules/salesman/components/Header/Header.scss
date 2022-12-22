@@ -1,0 +1,18 @@
+.salesman-header {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  &__filter {
+    &-input {
+      display: flex;
+      .dropdown {
+        background-color: white;
+      }
+    }
+  }
+  .tippy-content {
+    padding: 0 !important;
+    position: relative;
+    z-index: 1;
+  }
+}

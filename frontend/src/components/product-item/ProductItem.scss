@@ -1,0 +1,83 @@
+@use "../../scss/" as *;
+.content-items {
+  text-align: center;
+  position: relative;
+}
+.content-items__icons--wrapper {
+  position: absolute;
+  right: 0;
+  top: 108px;
+}
+.content-items:hover .content-items__icons {
+  display: flex;
+  animation: HoverItem 0.4s ease-in;
+}
+.content-items__icons {
+  font-size: 18px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: $text-white;
+  background-color: #ccc;
+  &:hover {
+    background-color: $primary-color;
+    cursor: pointer;
+  }
+}
+.content-items__icons + .content-items__icons {
+  margin-top: 6px;
+}
+.content-items__sale {
+  letter-spacing: 1.2px;
+  line-height: 23px;
+  font-size: 12px;
+  background-color: $primary-color;
+  width: 43px;
+  height: 23px;
+  color: $text-white;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.content-items-img__wrap {
+  width: 100%;
+  height: 264px;
+  img {
+    width: 88%;
+    height: 100%;
+  }
+}
+.content-items__name {
+  font-family: "Open Sans", sans-serif;
+  font-size: 15px;
+  color: #000;
+  font-weight: 600;
+}
+.content-items__price {
+  &--new {
+    color: $primary-color;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  &--old {
+    opacity: 0.6;
+    margin-left: 8px;
+    font-size: 12px;
+    font-weight: normal;
+    text-decoration: line-through;
+    margin-right: 6px;
+  }
+}
+
+@keyframes HoverItem {
+  from {
+    opacity: 0.2;
+    transform: translateX(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,79 @@
+@use "../../scss/" as *;
+.product-detail {
+  display: grid;
+  margin-bottom: 30px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  .content {
+    grid-column: 1/4;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    &__image {
+      &--main {
+        height: 410px;
+        width: 363px;
+        margin-bottom: 18px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      width: 100%;
+      &--children {
+        display: flex;
+        height: 108px;
+        width: 100%;
+        gap: 10px;
+        img {
+          width: 90px;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    &__info {
+      border-bottom: 1px solid #ccc;
+      &-name {
+        margin-bottom: 20px;
+      }
+      p {
+        font-weight: 700;
+        color: #546081;
+        span {
+          color: #453828;
+        }
+      }
+      &-price {
+        color: $primary-color;
+      }
+    }
+    &__howmany {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      &-custom {
+        display: flex;
+        align-items: center;
+        // .buy-btn:hover {
+        //   background-color: #453728;
+        // }
+        &--count {
+          width: 80px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: $text-white;
+          border: 0.6px solid #ccc;
+          margin: 0 4px;
+        }
+        .buy-btn {
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}
+// 363
+// 410

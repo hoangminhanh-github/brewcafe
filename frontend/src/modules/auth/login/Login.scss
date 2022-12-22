@@ -1,0 +1,68 @@
+@use "../../../scss/" as *;
+$padding-default: 40px;
+.login-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  margin: 30px 0;
+
+  .login-left {
+    border: 0.7px solid #ccc;
+    padding: $padding-default;
+    p {
+      font-weight: 100;
+      margin: 10px 0;
+    }
+  }
+  .login-right {
+    border: 0.7px solid #ccc;
+    padding: $padding-default;
+    display: flex;
+    flex-direction: column;
+
+    #login-left-email,
+    #login-left-pass {
+      width: 70%;
+      height: 36px;
+      line-height: 40px;
+      padding-left: 10px;
+    }
+    &__btn {
+      align-items: center;
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+
+      a:hover {
+        color: $primary-color;
+        cursor: pointer;
+      }
+    }
+    &__permission {
+      margin-top: 20px;
+      &:hover {
+        cursor: pointer;
+        color: $primary-color;
+      }
+      &-item {
+        background-color: #453728;
+        display: grid;
+        grid-template-columns: 20% 60% 20%;
+        justify-items: center;
+        input {
+          font-size: 10px;
+          width: 14px;
+        }
+      }
+    }
+  }
+}
+// tippy
+.tippy-content {
+  padding: 0;
+  width: 100px;
+  border-radius: 4px;
+  background-color: #453728;
+  border-radius: 4px;
+  overflow: hidden;
+}

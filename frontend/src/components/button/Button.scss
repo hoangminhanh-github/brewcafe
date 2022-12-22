@@ -1,0 +1,11 @@
+@use "../../scss/" as *;
+
+button {
+  letter-spacing: 0.7px;
+  color: $text-white;
+  .primary {
+  }
+}
+button:hover {
+  opacity: 0.7;
+}

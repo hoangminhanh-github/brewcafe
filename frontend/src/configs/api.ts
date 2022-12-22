@@ -1,0 +1,26 @@
+import { APIHost } from "utils";
+
+enum APIService {
+  auth,
+  public,
+}
+
+function getBaseUrl(service: APIService) {
+  if (service === APIService.auth) {
+    return `${APIHost}/auth`;
+  } else if (service === APIService.public) {
+    return `${APIHost}`;
+  }
+
+  return "";
+}
+
+const API_PATHS = {
+  getUser: `${getBaseUrl(APIService.public)}/user`,
+  getBands: `${getBaseUrl(APIService.public)}/band`,
+  getProducts: `${getBaseUrl(APIService.public)}/product`,
+  getProductDetail: `${getBaseUrl(APIService.public)}/product/detail`,
+  auth: `${getBaseUrl(APIService.auth)}`,
+  register: `${getBaseUrl(APIService.auth)}/register`,
+};
+export default API_PATHS;

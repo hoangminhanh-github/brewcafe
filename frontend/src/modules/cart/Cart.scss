@@ -1,0 +1,68 @@
+@use "../../scss/" as *;
+.cart {
+  margin: 5px 0 20px 0;
+  .cart-header {
+    font-weight: 300;
+  }
+  .cart-content {
+    margin-top: 30px;
+    .table {
+      width: 100%;
+      &-head {
+        background-color: #453728;
+        color: $text-white;
+        height: 40px;
+        line-height: 40px;
+        font-weight: 500;
+        font-size: 14px;
+      }
+      tr {
+        display: grid;
+        grid-template-columns: 10% 30% 20% 10% 20% 10%;
+        gap: 1px;
+      }
+      &-item {
+        td {
+          border: 0.2px solid white;
+          text-align: center;
+          height: 160px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        &__name {
+          color: $primary-color;
+        }
+        &__price-total {
+          color: $primary-color;
+        }
+        &__delete {
+          .icons {
+            font-size: 16px;
+            padding: 10px;
+            color: #898989;
+            font-size: 46px;
+          }
+        }
+      }
+    }
+  }
+  .cart-footer {
+    display: flex;
+    justify-content: space-between;
+    button {
+      width: "200px";
+      height: "40px";
+    }
+    &__total {
+      border: 1px solid #ccc;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 30%;
+      // align-content: center;
+      // h4{
+      //   border-right: 1px solid #ccc;
+      // }
+    }
+  }
+}

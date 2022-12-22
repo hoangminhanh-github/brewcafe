@@ -1,0 +1,64 @@
+@use "../../../../scss/" as *;
+.flash-contact {
+  width: 128px;
+  height: 135px;
+  position: relative;
+  img {
+    width: 100%;
+  }
+}
+.flash-contact__icons {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #755b4e 0%, #482a1d 50%, #5d4234 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-white;
+  font-size: 24px;
+  &.phone {
+    top: 120px;
+    left: 49px;
+  }
+  &.mess {
+    bottom: -101px;
+    left: 49px;
+  }
+  &.zalo {
+    left: 49px;
+    bottom: -164px;
+  }
+}
+.number {
+  animation: Number_RunIn linear 0.2s;
+
+  font-size: 15px;
+  display: none;
+  color: white;
+  text-align: center;
+  top: 0;
+  position: absolute;
+  background: linear-gradient(90deg, #5a3f31 0%, #381f15 50%, #282723 100%);
+  border-radius: 15px;
+  width: 113px;
+  top: 8px;
+  right: -111px;
+  height: 29px;
+  line-height: 28px;
+}
+.phone:hover .number {
+  display: block;
+}
+
+@keyframes Number_RunIn {
+  from {
+    opacity: 0.1;
+    transform: translateX(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

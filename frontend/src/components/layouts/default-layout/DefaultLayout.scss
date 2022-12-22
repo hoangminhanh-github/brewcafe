@@ -1,0 +1,20 @@
+@use "../../../scss/" as *;
+.layout-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.sticky-cart--wrapper {
+  z-index: 100000000000;
+  position: fixed;
+  top: 136px;
+  right: 4px;
+}
+.flash-contact--wrapper {
+  z-index: 100000000000;
+  position: fixed;
+  bottom: 180px;
+  left: 0;
+}

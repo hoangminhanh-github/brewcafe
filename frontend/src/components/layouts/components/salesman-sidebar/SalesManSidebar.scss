@@ -1,0 +1,46 @@
+@use "../../../../scss//" as *;
+.salesman-sidebar {
+  &-items {
+    .parent {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 10% 50% 10%;
+      justify-items: center;
+      gap: 6px;
+      .icons.down {
+        transform: rotate(180deg);
+        transition: linear 0.3s;
+      }
+      .icons {
+        transform: rotate(0);
+        transition: linear 0.3s;
+        font-weight: 600;
+      }
+    }
+    .children {
+      margin-left: 24%;
+      animation: down ease-out 0.4s;
+      font-size: 13px;
+      p:hover {
+        color: $orange-color;
+        cursor: pointer;
+      }
+      &.hidden {
+        display: none;
+      }
+    }
+  }
+}
+.salesman-sidebar-items + .salesman-sidebar-items {
+  margin-top: 20px;
+}
+@keyframes down {
+  from {
+    opacity: 0.7;
+    transform: translateY(-1%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

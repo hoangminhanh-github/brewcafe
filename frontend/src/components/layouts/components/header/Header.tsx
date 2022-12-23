@@ -18,6 +18,8 @@ const Header = () => {
   };
 
   const user: any = useSelector((state: IAppState) => state.auth.user);
+  const isValidUser =
+    user?.permission == "Vendor" || user?.permission == "Admin";
   return (
     <div className="header">
       <div className="header-top">
@@ -84,8 +86,11 @@ const Header = () => {
             >
               Ấm pha cafe
             </Link>
-            {user.permission != "User" && (
-              <Link to={ROUTES.salesman} className="header-bottom__navbar-item">
+            {isValidUser && (
+              <Link
+                to={`${ROUTES.salesman.split(":")[0]}all`}
+                className="header-bottom__navbar-item"
+              >
                 Kênh người bán
               </Link>
             )}

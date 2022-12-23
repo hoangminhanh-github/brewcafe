@@ -1,0 +1,40 @@
+@use "../../../../scss/" as *;
+.salesman-table {
+  padding: 0 20px;
+  &__header {
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    span {
+      margin-top: 7px;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+  }
+  &__content {
+    table {
+      width: 100%;
+      tr {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 10% 30% 10% 20% 30%;
+        margin-bottom: 20px;
+      }
+      td {
+        text-align: center;
+      }
+    }
+  }
+}
+.salesman-table--no-img {
+  min-height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  flex-direction: column;
+  gap: 2px;
+}

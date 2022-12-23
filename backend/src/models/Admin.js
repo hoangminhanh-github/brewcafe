@@ -1,9 +1,16 @@
 const { READONLY } = require('sqlite3')
 const db = require('./index')
+const { v4: uuidv4 } = require('uuid')
 module.exports = (sequelize, DataTypes, Model) => {
   const Admin = sequelize.define(
     'Admin',
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: uuidv4(),
+        allowNull: false,
+        primaryKey: true,
+      },
       permission: {
         type: DataTypes.STRING,
         allowNull: false,

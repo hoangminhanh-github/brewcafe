@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes, Model) => {
         type: DataTypes.STRING || DataTypes.INTEGER,
         allowNull: false,
       },
+      leftIn: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       desc: {
         type: DataTypes.STRING,
         allowNull: false,

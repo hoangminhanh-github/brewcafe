@@ -1,12 +1,66 @@
+@use "../../../../scss/" as *;
+$border-color: #bbbbbb;
 .salesman-header {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-
+  padding: 24px;
+  background-color: white;
+  height: 193px;
+  gap: 10px;
   &__filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &-state {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      input {
+        border: 1px solid $border-color;
+        flex: 1;
+        padding-left: 10px;
+        height: 30px;
+      }
+    }
     &-input {
       display: flex;
+      height: 30px;
       .dropdown {
+        margin: 4px 0;
         background-color: white;
+        border-radius: 2px;
+        p {
+          padding: 5px 0 5px 10px;
+          &:hover {
+            background-color: #f6f6f6;
+          }
+        }
+        .active {
+          color: $orange-color;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+        box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.75);
+      }
+      .div {
+        width: 38%;
+        border: 1px solid $border-color;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 2px;
+        span {
+          font-size: 13px;
+        }
+      }
+      input {
+        border-radius: 2px;
+        flex: 1;
+        border: 1px solid #ccc;
+        padding-left: 10px;
       }
     }
   }
@@ -14,5 +68,27 @@
     padding: 0 !important;
     position: relative;
     z-index: 1;
+    width: 158px;
+    background-color: white;
+    color: black;
+  }
+}
+.salesman-header__filter--right {
+  .band {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    div {
+      height: 30px;
+      padding-left: 4px;
+      flex: 1;
+      line-height: 26px;
+      color: #ccc;
+      border: 0.7px solid #bbbbbb;
+      border-radius: 2px;
+      &:hover {
+        border: 0.7px solid rgb(76, 75, 75);
+      }
+    }
   }
 }

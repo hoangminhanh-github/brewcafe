@@ -14,6 +14,7 @@ export default interface IProduct {
   type: string;
   bandName: string;
   productCode?: string;
+  leftIn: number;
 }
 export interface IProductAfterAddCart extends IProduct {
   count: number;

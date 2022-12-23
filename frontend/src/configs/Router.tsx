@@ -30,7 +30,7 @@ export const ROUTES = {
   cart: "/cart",
   login: "/login",
   register: "/register",
-  salesman: "/salesman",
+  salesman: "/salesman/product/list/:slug",
   home: "/",
 };
 

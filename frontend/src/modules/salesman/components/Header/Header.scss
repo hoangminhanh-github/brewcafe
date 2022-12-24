@@ -74,6 +74,19 @@ $border-color: #bbbbbb;
   }
 }
 .salesman-header__filter--right {
+  .tippy-list {
+    border: 1px solid #ccc;
+    width: 400px;
+    background-color: white;
+    &-items {
+      width: 100%;
+      padding-left: 16px;
+      &:hover {
+        cursor: pointer;
+        background-color: $orange-color;
+      }
+    }
+  }
   .band {
     display: flex;
     gap: 5px;
@@ -89,6 +102,9 @@ $border-color: #bbbbbb;
       &:hover {
         border: 0.7px solid rgb(76, 75, 75);
       }
+    }
+    &:hover {
+      cursor: pointer;
     }
   }
 }

@@ -8,9 +8,6 @@ class ProductController {
       include: {
         model: db.Band,
         attributes: ['name'],
-        where: {
-          origin: 'USA',
-        },
       },
     })
     res.json(hehe)

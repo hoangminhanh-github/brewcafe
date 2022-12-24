@@ -11,33 +11,15 @@ import { useSelector } from "react-redux";
 
 interface IProps {
   slug?: string;
+  filterBand?: string;
+  products: IProduct[];
 }
-const Table = ({ slug }: IProps) => {
-  const user: any = useSelector((state: IAppState) => state.auth.user);
-  const [product, setProduct] = useState<IProduct[]>([]);
-
-  // logic
-  const params: any = { VendorId: user.id };
-  if (slug == "soldout") {
-    params["leftIn"] = 0;
-  }
-  if (slug == "active") {
-    params["leftIn"] = "> 0";
-  }
-  const getProductByUser = async () => {
-    const res = await axios.get("http://localhost:3001/product/list/user", {
-      params: params,
-    });
-    setProduct(res.data);
-  };
-  useEffect(() => {
-    getProductByUser();
-  }, [slug]);
+const Table = ({ filterBand, products }: IProps) => {
   return (
     <div className="salesman-table">
       <div className="salesman-table__header">
         <span className="span">
-          <span>{product.length}</span> Sản phẩm{" "}
+          <span>{products.length}</span> Sản phẩm
         </span>
         <Button
           size={{ width: "200px", height: "36px" }}
@@ -63,12 +45,14 @@ const Table = ({ slug }: IProps) => {
               <th className="salesman-table-head">Tên sản phẩm</th>
               <th className="salesman-table-head">SKU</th>
               <th className="salesman-table-head">Giá</th>
+              <th className="salesman-table-head">Hãng</th>
+
               <th className="salesman-table-head">Kho hàng</th>
             </tr>
           </thead>
           <tbody>
-            {product.length > 0 ? (
-              product.map((item) => (
+            {products.length > 0 ? (
+              products.map((item) => (
                 <tr key={item.id}>
                   <td>
                     <input type="checkbox" title="f" />
@@ -76,6 +60,7 @@ const Table = ({ slug }: IProps) => {
                   <td>{item.name}</td>
                   <td></td>
                   <td>{splitNumber(item.price)} đ</td>
+                  <td>{item.bandName}</td>
                   <td>{item.leftIn > 0 ? item.leftIn : "Hết hàng"}</td>
                 </tr>
               ))

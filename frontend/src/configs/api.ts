@@ -16,6 +16,7 @@ function getBaseUrl(service: APIService) {
 }
 
 const API_PATHS = {
+  getProductSort: `${getBaseUrl(APIService.public)}/product/list/name`,
   getUser: `${getBaseUrl(APIService.public)}/user`,
   getBands: `${getBaseUrl(APIService.public)}/band`,
   getProducts: `${getBaseUrl(APIService.public)}/product`,

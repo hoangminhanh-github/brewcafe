@@ -10,19 +10,23 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { TfiFaceSmile } from "react-icons/tfi";
+import { IUser } from "models/User.model";
 
 const Salesman = () => {
   // const
   const { slug } = useParams();
   const navigate = useNavigate();
-  const user: any = useSelector((state: IAppState) => state.auth.user);
-  const isValidUser = user.permission == "Admin" || user.permission == "Vendor";
+  const user: IUser | undefined = useSelector(
+    (state: IAppState) => state.auth.user
+  );
+  const isValidUser =
+    user?.permission == "Admin" || user?.permission == "Vendor";
   const salesmanNav = [
     { name: "Tất cả", value: "all" },
     { name: "Đang hoạt động", value: "active" },
     { name: "Hết hàng", value: "soldout" },
   ];
-  const params: any = { VendorId: user.id };
+  const params: any = { VendorId: user?.id };
   //state
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filterBand, setFilterBand] = useState<string>();

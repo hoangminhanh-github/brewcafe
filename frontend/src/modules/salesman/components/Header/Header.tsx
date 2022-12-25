@@ -11,6 +11,7 @@ import Button from "components/button/Button";
 import { IBand } from "models/Band.model";
 import API_PATHS from "configs/api";
 import { MAX_SAFE_NUMBER, splitNumber } from "utils";
+import AutoCompleBox from "modules/salesman/utils/AutoCompleBox";
 
 interface IProps {
   setFilterBand: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -25,8 +26,11 @@ const Header = ({
   filterBand,
   filterRangePrice,
 }: IProps) => {
-  const ARR_FILTER = ["Tên sản phẩm", "SKU", "Mã sản phẩm"];
-  const [filter, setFilter] = useState<string>(ARR_FILTER[0]);
+  const ARR_FILTER = [
+    { name: "Tên sản phẩm", value: "name" },
+    { name: "Mã sản phẩm", value: "productCode" },
+  ];
+  const [filter, setFilter] = useState<string>(ARR_FILTER[0].name);
   const [bands, setBands] = useState<IBand[]>([]);
   const minInputRef = useRef<any>();
   const maxInputRef = useRef<any>();
@@ -78,11 +82,11 @@ const Header = ({
                 <div className="dropdown">
                   {ARR_FILTER.map((item) => (
                     <p
-                      className={filter == item ? "active" : ""}
-                      key={item}
-                      onClick={() => setFilter(item)}
+                      className={filter == item.name ? "active" : ""}
+                      key={item.value}
+                      onClick={() => setFilter(item.name)}
                     >
-                      {item}
+                      {item.name}
                     </p>
                   ))}
                 </div>
@@ -93,7 +97,10 @@ const Header = ({
               </div>
             </Tippy>
 
-            <input type="text" placeholder="Nhập tối thiểu 2 kí tự..." />
+            {/* <input type="text" placeholder="Nhập tối thiểu 2 kí tự..." /> */}
+            <AutoCompleBox
+              searchWith={ARR_FILTER.find((item) => item.name == filter)}
+            />
           </div>
           <div className="salesman-header__filter-price">
             <span>Khoảng giá sản phẩm</span>

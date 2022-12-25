@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { BiXCircle } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const CATE_IMG = require("assets/image/cate_banner.png");
 import { ROUTES } from "configs/Router";
@@ -22,7 +22,7 @@ const SideBar = () => {
   const dispatch = useDispatch();
   // function
   const getBandList = async () => {
-    const res: any = await axios.get(API_PATHS.getBands);
+    const res: AxiosResponse<IBand[]> = await axios.get(API_PATHS.getBands);
     setBandList(res.data);
   };
   // handle convert array price filter

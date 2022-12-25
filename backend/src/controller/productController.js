@@ -3,14 +3,16 @@ const passport = require('passport')
 const { Op } = require('sequelize')
 const LocalStrategy = require('passport-local').Strategy
 class ProductController {
-  async test(req, res) {
-    const hehe = await db.Product.findAll({
-      include: {
-        model: db.Band,
-        attributes: ['name'],
-      },
-    })
-    res.json(hehe)
+  //[get] /product/list/name
+  async getAllProductName(req, res, err) {
+    try {
+      const listName = await db.Product.findAll({
+        attributes: ['name', 'vendorEmail', 'leftIn'],
+      })
+      res.json(listName)
+    } catch {
+      res.status(401).json(err)
+    }
   }
   // [get] /products/list/:user
   async getProductByUser(req, res) {

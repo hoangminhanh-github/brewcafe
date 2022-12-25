@@ -1,7 +1,9 @@
 import Button from "components/button/Button";
 import { ROUTES } from "configs/Router";
 import Cookies from "js-cookie";
+import { IUser } from "models/User.model";
 import { setUserRD } from "modules/auth/redux/authSlice";
+
 import React from "react";
 import { BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +19,9 @@ const Header = () => {
     dispatch(setUserRD({ data: {}, token: {} }));
   };
 
-  const user: any = useSelector((state: IAppState) => state.auth.user);
+  const user: IUser | undefined = useSelector(
+    (state: IAppState) => state.auth.user
+  );
   const isValidUser =
     user?.permission == "Vendor" || user?.permission == "Admin";
   return (

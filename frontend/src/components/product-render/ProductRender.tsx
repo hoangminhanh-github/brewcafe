@@ -38,6 +38,9 @@ const ManualGrinder = () => {
   useEffect(() => {
     getProductList();
   }, [filterBandList, filterPriceList, type]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="product-render">
       <div className="product-render__name">

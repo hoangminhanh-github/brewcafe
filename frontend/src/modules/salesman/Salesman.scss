@@ -1,6 +1,15 @@
 @use "../../scss/" as *;
 .salesman {
   margin-bottom: 40px;
+  h2 {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .icon {
+      color: #c6a03e;
+    }
+  }
 }
 
 .salesman-body {

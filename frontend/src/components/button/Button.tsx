@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 
 import "./Button.scss";
 interface IProps {
+  btn_type?: "button" | "submit" | "reset" | undefined;
   customClass?: string;
   type?: string;
   color?: string;
@@ -15,6 +16,7 @@ interface IProps {
   textcolor?: string;
   onClick?: () => void;
 }
+
 const Button = ({
   customClass = "",
   type = "primary",
@@ -23,6 +25,7 @@ const Button = ({
   text = "Button",
   textcolor = "white",
   border = false,
+  btn_type = "button",
   onClick,
 }: IProps) => {
   return (
@@ -36,6 +39,7 @@ const Button = ({
         color: `${textcolor}`,
         borderRadius: `${border ? "4px" : ""}`,
       }}
+      type={btn_type}
       onClick={onClick}
     >
       {text}

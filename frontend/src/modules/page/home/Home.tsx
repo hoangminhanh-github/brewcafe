@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Button from "components/button/Button";
@@ -16,6 +16,9 @@ const Home = () => {
     width: "140px",
     height: "44px",
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="homepage">
       <img className="homepage__img" src={HOMEPAGE_IMG} alt="" />

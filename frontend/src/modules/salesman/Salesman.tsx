@@ -1,14 +1,15 @@
 import Header from "./components/Header/Header";
+import IProduct from "models/Product.model";
 import "./Salesman.scss";
 const Table = lazy(() => import("modules/salesman/components/Table/Table"));
+import { IAppState } from "redux/reducer";
+import { ROUTES } from "configs/Router";
 
 import React, { lazy, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { IAppState } from "redux/reducer";
 import { useNavigate, useParams } from "react-router-dom";
-import { ROUTES } from "configs/Router";
 import axios from "axios";
-import IProduct from "models/Product.model";
+import { TfiFaceSmile } from "react-icons/tfi";
 
 const Salesman = () => {
   // const
@@ -25,6 +26,7 @@ const Salesman = () => {
   //state
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filterBand, setFilterBand] = useState<string>();
+  const [filterRangePrice, setFilterRangePrice] = useState<number[]>([]);
   // logic
   if (slug == "soldout") {
     params["leftIn"] = 0;
@@ -35,6 +37,9 @@ const Salesman = () => {
   if (filterBand) {
     params["bandName"] = filterBand;
   }
+  if (filterRangePrice) {
+    params["price"] = filterRangePrice;
+  }
 
   const getProductList = async () => {
     const res = await axios.get("http://localhost:3001/product/list/user", {
@@ -44,15 +49,24 @@ const Salesman = () => {
   };
   useEffect(() => {
     getProductList();
-  }, [slug, filterBand]);
+  }, [slug, filterBand, filterRangePrice]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       {isValidUser ? (
         <div className="salesman">
+          <h2>
+            {` Gian hàng của ${user.name} nè `}{" "}
+            <TfiFaceSmile className="icon" />
+          </h2>
           <Header
             setFilterBand={setFilterBand}
+            setFilterRangePrice={setFilterRangePrice}
             filterBand={filterBand}
+            filterRangePrice={filterRangePrice}
           ></Header>
           <div className="salesman-body">
             <div className="salesman-body-nav">

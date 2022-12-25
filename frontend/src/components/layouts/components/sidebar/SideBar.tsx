@@ -78,7 +78,10 @@ const SideBar = () => {
             <Link to={ROUTES.home}>Trang chủ</Link>
           </li>
           <li>
-            <Link to={ROUTES.manual_brewing}>Manual brewing</Link>
+            <Link to={ROUTES.manual_brewing}>Manual Brewing</Link>
+          </li>
+          <li>
+            <Link to={ROUTES.manual_grinder}>Manual Grinder</Link>
           </li>
           <li>
             <Link to={ROUTES.home}>Ấm pha cafe</Link>

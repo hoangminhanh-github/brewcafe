@@ -15,11 +15,18 @@ class ProductController {
   // [get] /products/list/:user
   async getProductByUser(req, res) {
     let params = req?.query
+    console.log(params)
     if (params.leftIn == '> 0') {
       params.leftIn = {
         [Op.gt]: 0,
       }
     }
+    if (params.price) {
+      params.price = {
+        [Op.between]: params.price,
+      }
+    }
+    console.log(params)
     const products = await db.Product.findAll({
       where: params,
     })

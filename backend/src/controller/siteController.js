@@ -19,7 +19,7 @@ class SiteController {
       })
       res.json({ data: user, token: `Bearer ${token}` })
     } catch {
-      res.json('loi')
+      res.status(401).json('loi')
     }
   }
   // user là dùng chung cho cả 3 permission sau khi đã qua passport authenticate (check bên router)

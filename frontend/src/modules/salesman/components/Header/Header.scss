@@ -8,18 +8,45 @@ $border-color: #bbbbbb;
   height: 193px;
   gap: 10px;
   &__filter {
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    &-state {
+    &-price {
       display: flex;
       gap: 10px;
       align-items: center;
+      .input-group {
+        display: flex;
+        position: relative;
+        gap: 2px;
+        .err {
+          color: red;
+          position: absolute;
+          top: 8%;
+          left: 105%;
+          span {
+            white-space: nowrap;
+          }
+        }
+        .range-price-alert {
+          color: #83ab43;
+          position: absolute;
+          white-space: nowrap;
+          bottom: -24px;
+          left: -77%;
+        }
+      }
       input {
         border: 1px solid $border-color;
         flex: 1;
-        padding-left: 10px;
+        padding-left: 2px;
         height: 30px;
+        max-width: 100px;
+        border-radius: 2px;
+        &:hover {
+          border-color: $orange-color;
+        }
       }
     }
     &-input {
@@ -106,5 +133,13 @@ $border-color: #bbbbbb;
     &:hover {
       cursor: pointer;
     }
+  }
+}
+
+.inputs {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }

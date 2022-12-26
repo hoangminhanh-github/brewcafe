@@ -31,6 +31,8 @@ const Salesman = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filterBand, setFilterBand] = useState<string>();
   const [filterRangePrice, setFilterRangePrice] = useState<number[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  console.log(searchValue);
   // logic
   if (slug == "soldout") {
     params["leftIn"] = 0;
@@ -44,7 +46,9 @@ const Salesman = () => {
   if (filterRangePrice) {
     params["price"] = filterRangePrice;
   }
-
+  if (searchValue) {
+    params["name"] = searchValue;
+  }
   const getProductList = async () => {
     const res = await axios.get("http://localhost:3001/product/list/user", {
       params: params,
@@ -71,6 +75,7 @@ const Salesman = () => {
             setFilterRangePrice={setFilterRangePrice}
             filterBand={filterBand}
             filterRangePrice={filterRangePrice}
+            setSearchValue={setSearchValue}
           ></Header>
           <div className="salesman-body">
             <div className="salesman-body-nav">

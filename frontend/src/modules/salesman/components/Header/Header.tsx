@@ -18,6 +18,7 @@ interface IProps {
   setFilterRangePrice: React.Dispatch<React.SetStateAction<number[]>>;
   filterBand?: string;
   filterRangePrice: Array<number>;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Header = ({
@@ -25,6 +26,7 @@ const Header = ({
   setFilterRangePrice,
   filterBand,
   filterRangePrice,
+  setSearchValue,
 }: IProps) => {
   const ARR_FILTER = [
     { name: "Tên sản phẩm", value: "name" },
@@ -41,6 +43,7 @@ const Header = ({
     };
     getBands();
   }, []);
+
   const handleReset = () => {
     setFilterBand("");
     minInputRef.current.value = "";
@@ -51,16 +54,14 @@ const Header = ({
   const formik = useFormik({
     initialValues: {
       min_input: 0,
-      max_input: 0,
+      max_input: MAX_SAFE_NUMBER,
     },
     validationSchema: Yup.object({
-      min_input: Yup.number().required("Trường này bắt buộc nhập số."),
-      max_input: Yup.number()
-        .required("Trường này bắt buộc nhập số.")
-        .moreThan(
-          Yup.ref("min_input"),
-          `Gía trị sau phải lớn hơn giá trị trước !!`
-        ),
+      min_input: Yup.number(),
+      max_input: Yup.number().moreThan(
+        Yup.ref("min_input"),
+        `Gía trị sau phải lớn hơn giá trị trước !!`
+      ),
     }),
     onSubmit: async (values) => {
       const priceRange = [values.min_input, values.max_input];
@@ -99,6 +100,7 @@ const Header = ({
 
             {/* <input type="text" placeholder="Nhập tối thiểu 2 kí tự..." /> */}
             <AutoCompleBox
+              setSearchValue={setSearchValue}
               searchWith={ARR_FILTER.find((item) => item.name == filter)}
             />
           </div>
@@ -133,7 +135,12 @@ const Header = ({
                 {filterRangePrice.length > 1 && (
                   <span>{`Đang tìm giá từ ${splitNumber(
                     filterRangePrice[0]
-                  )} VNĐ đến ${splitNumber(filterRangePrice[1])} VNĐ`}</span>
+                  )} VNĐ  ${
+                    filterRangePrice[1] == MAX_SAFE_NUMBER
+                      ? ""
+                      : `đến ${splitNumber(filterRangePrice[1])} VNĐ`
+                  }`}</span>
+                  // VNĐ đến ${splitNumber(filterRangePrice[1])} VNĐ
                 )}
               </div>
             </div>

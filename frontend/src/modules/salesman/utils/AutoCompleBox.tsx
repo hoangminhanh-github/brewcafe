@@ -8,12 +8,15 @@ import API_PATHS from "configs/api";
 
 interface IProps {
   searchWith: { name: string; value: string } | undefined;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AutoCompleBox = ({
   searchWith = { name: "", value: "name" },
+  setSearchValue,
 }: IProps) => {
   const [productSort, setProductSort] = useState([]);
+  // const [hehe, setHehe] = useState();
   const getAllProductName = async () => {
     const res: any = await axios.get(API_PATHS.getProductSort);
     setProductSort(res.data);
@@ -28,6 +31,10 @@ const AutoCompleBox = ({
   const optionList = setArr.size > 1 ? [...setArr] : ["đéo có gì !!"];
   return (
     <Autocomplete
+      // onChange={(e: any) => setHehe(e.target.value)}
+      onInputChange={(e, value) => {
+        setSearchValue(value);
+      }}
       className="salesman-header-search-auto"
       freeSolo
       disablePortal

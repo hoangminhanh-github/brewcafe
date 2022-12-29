@@ -32,7 +32,6 @@ const Salesman = () => {
   const [filterBand, setFilterBand] = useState<string>();
   const [filterRangePrice, setFilterRangePrice] = useState<number[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
-  console.log(searchValue);
   // logic
   if (slug == "soldout") {
     params["leftIn"] = 0;
@@ -76,6 +75,7 @@ const Salesman = () => {
             filterBand={filterBand}
             filterRangePrice={filterRangePrice}
             setSearchValue={setSearchValue}
+            searchValue={searchValue}
           ></Header>
           <div className="salesman-body">
             <div className="salesman-body-nav">

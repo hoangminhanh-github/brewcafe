@@ -1,0 +1,106 @@
+@use "../../../../scss/" as *;
+.salesman-new-product {
+  background-color: white;
+  padding-top: 6px;
+  padding-right: 20px;
+  border-radius: 1px;
+  margin-bottom: 40px;
+  &-content {
+    margin-left: 20px;
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .form-field {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      p {
+        color: #333;
+      }
+    }
+  }
+  input {
+    height: 36px;
+    border: 0.7px solid #ccc;
+    flex: 1;
+    border-radius: 2px;
+    &:hover {
+      border-color: rgb(146, 145, 145);
+    }
+    padding-left: 10px;
+  }
+}
+.form-field + .form-field {
+  margin-top: 20px;
+}
+.form-field__addimg {
+  display: flex;
+  flex-direction: column;
+  color: $orange-color;
+  align-items: center;
+  border: 1px dashed #ccc;
+  width: 76px;
+  height: 76px;
+  justify-content: center;
+  border-radius: 1px;
+  p {
+    font-size: 10px;
+  }
+  &:hover {
+    background-color: rgba(248, 227, 223, 0.7);
+  }
+}
+.form-field {
+  textarea {
+    resize: none;
+    min-height: 210px;
+    height: 210px;
+    width: 100%;
+  }
+}
+.form-field {
+  .list-band {
+    background-color: white;
+  }
+}
+.form-field {
+  .tippy-content {
+    width: 200px;
+    border: 0.7px solid #ccc;
+    max-height: 200px;
+    overflow-y: scroll;
+    p {
+      padding: 8px;
+      &:hover {
+        color: $orange-color;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.form-field.upload-image {
+  .upload-image__img-list {
+    display: flex;
+    .list-item {
+      position: relative;
+      img {
+        width: 76px;
+        height: 76px;
+        border: 0.7px solid #ccc;
+        margin-right: 8px;
+        border-radius: 1px;
+      }
+      .icons {
+        position: absolute;
+        right: 0%;
+        right: 0;
+        top: -4px;
+        color: red;
+      }
+    }
+  }
+}
+.form-field-submit-btn {
+  margin-top: 30px;
+}

@@ -1,13 +1,12 @@
 import "./Table.scss";
 import Button from "components/button/Button";
 const NO_PRODUCT = require("assets/image/no_product2.png");
-import { IAppState } from "redux/reducer";
 import IProduct from "models/Product.model";
 import { splitNumber } from "utils";
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "configs/Router";
 
 interface IProps {
   slug?: string;
@@ -15,6 +14,7 @@ interface IProps {
   products: IProduct[];
 }
 const Table = ({ filterBand, products }: IProps) => {
+  const navigate = useNavigate();
   return (
     <div className="salesman-table">
       <div className="salesman-table__header">
@@ -22,6 +22,9 @@ const Table = ({ filterBand, products }: IProps) => {
           <span>{products.length}</span> Sản phẩm
         </span>
         <Button
+          onClick={() => {
+            navigate(ROUTES.salesman_newProduct);
+          }}
           size={{ width: "200px", height: "36px" }}
           color={"#E44B2C"}
           text="+  Thêm 1 sản phẩm mới."

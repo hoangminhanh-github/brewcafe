@@ -1,12 +1,17 @@
 @use "../../../../scss//" as *;
 .salesman-sidebar {
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
   &-items {
     .parent {
       display: grid;
       align-items: center;
-      grid-template-columns: 10% 50% 10%;
+      grid-template-columns: 20% 60% 10%;
       justify-items: center;
       gap: 6px;
+      font-weight: 700;
+      color: #999999;
       .icons.down {
         transform: rotate(180deg);
         transition: linear 0.3s;
@@ -18,9 +23,14 @@
       }
     }
     .children {
-      margin-left: 24%;
+      margin-left: 19%;
       animation: down ease-out 0.4s;
       font-size: 13px;
+      margin-top: 10px;
+      font-size: 14px;
+      p {
+        padding: 2px 0;
+      }
       p:hover {
         color: $orange-color;
         cursor: pointer;
@@ -34,6 +44,12 @@
 .salesman-sidebar-items + .salesman-sidebar-items {
   margin-top: 20px;
 }
+
+.salesman-sidebar-content {
+  width: 95%;
+  margin-top: 10px;
+}
+
 @keyframes down {
   from {
     opacity: 0.7;

@@ -9,11 +9,13 @@ import API_PATHS from "configs/api";
 interface IProps {
   searchWith: { name: string; value: string } | undefined;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  searchValue: string;
 }
 
 const AutoCompleBox = ({
   searchWith = { name: "", value: "name" },
   setSearchValue,
+  searchValue,
 }: IProps) => {
   const [productSort, setProductSort] = useState([]);
   // const [hehe, setHehe] = useState();
@@ -31,6 +33,7 @@ const AutoCompleBox = ({
   const optionList = setArr.size > 1 ? [...setArr] : ["đéo có gì !!"];
   return (
     <Autocomplete
+      inputValue={searchValue}
       // onChange={(e: any) => setHehe(e.target.value)}
       onInputChange={(e, value) => {
         setSearchValue(value);

@@ -21,6 +21,7 @@ const ProductItem = ({ product }: IProps) => {
     e.preventDefault();
     dispatch(setCartListRD(product));
   };
+
   return (
     <div className="content-items">
       <Link to={`${location.pathname}/${product.id}`}>

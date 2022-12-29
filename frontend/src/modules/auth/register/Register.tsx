@@ -26,9 +26,7 @@ const Register = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Nhập trường này chưa ???"),
-      password: Yup.string().required(
-        "Nhập trường này chưa,địt mẹ cứ để nhắc thế nhỉ???"
-      ),
+      password: Yup.string().required("Nhập trường này chưa???"),
       confirmPassword: Yup.string().oneOf(
         [Yup.ref("password"), null],
         "Passwords must match"
@@ -40,7 +38,8 @@ const Register = () => {
         values.permission = permission;
         values.age = +values.age;
         await axios.post(API_PATHS.register, values);
-        navigate(ROUTES.register);
+        alert("Đăng kí thành công");
+        navigate(ROUTES.login);
       } catch {
         alert("Đăng kí thất bại.Email người dùng có thể đã tồn tại");
       }

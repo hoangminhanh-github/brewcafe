@@ -21,6 +21,10 @@ const ProductRender = lazy(
 );
 const Register = lazy(() => import("modules/auth/register/Register"));
 const Salesman = lazy(() => import("modules/salesman/Salesman"));
+const SalesmanNewProduct = lazy(
+  () =>
+    import("modules/salesman/module/salesman-new-product/SalesmanNewProduct")
+);
 export const ROUTES = {
   details_brewing: "/brewing/:slug",
   details_grinder: "/grinder/:slug",
@@ -31,6 +35,7 @@ export const ROUTES = {
   login: "/login",
   register: "/register",
   salesman: "/salesman/product/list/:slug",
+  salesman_newProduct: "/salesman/product/new",
   home: "/",
 };
 
@@ -62,6 +67,11 @@ export const PUBLIC_ROUTE = [
   {
     path: ROUTES.salesman,
     component: <Salesman></Salesman>,
+    layout: LayoutSalesman,
+  },
+  {
+    path: ROUTES.salesman_newProduct,
+    component: <SalesmanNewProduct></SalesmanNewProduct>,
     layout: LayoutSalesman,
   },
   {

@@ -22,7 +22,6 @@ function App() {
       const getUser = async () => {
         const res = await dispatch(fetchThunk(API_PATHS.getUser, "get"));
         dispatch(setUserRD({ data: res.data, token: token }));
-        // console.log(res);
       };
       if (token) {
         getUser();

@@ -7,7 +7,6 @@ class SiteController {
   // [post] /auth
   async login(req, res, next) {
     const { email, password, permission = 'User' } = req.body
-    console.log(email, password, permission)
     try {
       const user = await db[permission].findOne({
         where: {

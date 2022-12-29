@@ -3,6 +3,21 @@ const passport = require('passport')
 const { Op } = require('sequelize')
 const LocalStrategy = require('passport-local').Strategy
 class ProductController {
+  // [post] / product/new
+  async setNewProduct(req, res, next) {
+    try {
+      const product = await db.Product.create(req.body)
+      await req.files?.map((item) => {
+        db.ProductImage.create({
+          image: item.path,
+          ProductId: product.id,
+        })
+      })
+      res.status(200).json('SUCCESS')
+    } catch (err) {
+      res.status(401).json(err)
+    }
+  }
   //[get] /product/list/name
   async getAllProductName(req, res, err) {
     try {
@@ -17,7 +32,6 @@ class ProductController {
   // [get] /products/list/:user
   async getProductByUser(req, res) {
     let params = req?.query
-    console.log(params)
     if (params.leftIn == '> 0') {
       params.leftIn = {
         [Op.gt]: 0,
@@ -28,7 +42,6 @@ class ProductController {
         [Op.between]: params.price,
       }
     }
-    console.log(params)
     const products = await db.Product.findAll({
       where: params,
     })

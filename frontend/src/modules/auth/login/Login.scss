@@ -56,13 +56,13 @@ $padding-default: 40px;
       }
     }
   }
-}
-// tippy
-.tippy-content {
-  padding: 0;
-  width: 100px;
-  border-radius: 4px;
-  background-color: #453728;
-  border-radius: 4px;
-  overflow: hidden;
+  // tippy
+  .tippy-content {
+    padding: 0;
+    width: 100px;
+    border-radius: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    color: white;
+  }
 }

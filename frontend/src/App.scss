@@ -33,3 +33,10 @@ input {
 ul {
   list-style: none;
 }
+//
+.tippy-content {
+  padding: 0 !important;
+  position: relative;
+  background-color: white;
+  color: black;
+}

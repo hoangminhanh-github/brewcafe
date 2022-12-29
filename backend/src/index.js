@@ -5,10 +5,18 @@ const http = require('http')
 const bodyParser = require('body-parser')
 const route = require('./routes/index')
 const db = require('./models')
-const app = express()
 const passport = require('passport')
 const session = require('express-session')
+const connectDB = require('./config/db')
 require('./config/passport')
+
+const app = express()
+const server = http.createServer(app)
+// body-parser
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+// express.urlencoded({ extended: true })
 
 // passport session
 const store = session.MemoryStore()
@@ -28,15 +36,13 @@ app.use(passport.initialize())
 app.use(passport.session())
 // passport session
 
-app.use(cors())
-const connectDB = require('./config/db')
-// body-parser
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-
+// app.use(
+//   express.urlencoded({
+//     extended: true,
+//   }),
+// )
 route(app)
 connectDB()
-const server = http.createServer(app)
 
 db.sequelize.sync().then(() => {
   server.listen(3001, () => {

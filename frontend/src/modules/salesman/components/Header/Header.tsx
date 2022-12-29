@@ -19,6 +19,7 @@ interface IProps {
   filterBand?: string;
   filterRangePrice: Array<number>;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  searchValue: string;
 }
 
 const Header = ({
@@ -27,6 +28,7 @@ const Header = ({
   filterBand,
   filterRangePrice,
   setSearchValue,
+  searchValue,
 }: IProps) => {
   const ARR_FILTER = [
     { name: "Tên sản phẩm", value: "name" },
@@ -49,6 +51,7 @@ const Header = ({
     minInputRef.current.value = "";
     maxInputRef.current.value = "";
     setFilterRangePrice([]);
+    setSearchValue("");
   };
 
   const formik = useFormik({
@@ -98,10 +101,10 @@ const Header = ({
               </div>
             </Tippy>
 
-            {/* <input type="text" placeholder="Nhập tối thiểu 2 kí tự..." /> */}
             <AutoCompleBox
               setSearchValue={setSearchValue}
               searchWith={ARR_FILTER.find((item) => item.name == filter)}
+              searchValue={searchValue}
             />
           </div>
           <div className="salesman-header__filter-price">

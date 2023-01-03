@@ -21,6 +21,7 @@ const API_PATHS = {
   getBands: `${getBaseUrl(APIService.public)}/band`,
   getProducts: `${getBaseUrl(APIService.public)}/product`,
   getProductDetail: `${getBaseUrl(APIService.public)}/product/detail`,
+  deleteProduct: `${getBaseUrl(APIService.public)}/product/delete`,
   auth: `${getBaseUrl(APIService.auth)}`,
   register: `${getBaseUrl(APIService.auth)}/register`,
 };

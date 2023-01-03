@@ -1,0 +1,68 @@
+@use "../../../scss/" as *;
+$padding-rl: 0px 7px 0 7px;
+.modal-outline {
+  z-index: 9999999999999999999999999;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(124, 123, 123, 0.4);
+  &.hidden {
+    display: none;
+  }
+  .modal {
+    transform: translateY(-60%);
+    width: 56%;
+    height: 50%;
+    background-color: #ffffff;
+    margin: auto;
+    animation: Drop_in linear 0.4s;
+
+    &-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0px 0 14px 0;
+    }
+  }
+  .modal-content__head {
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    background-color: $orange-color;
+    padding: $padding-rl;
+    color: white;
+  }
+  .modal-content__body {
+    padding: 10px 7px;
+  }
+  .modal-content__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: $padding-rl;
+    .delete {
+      background-color: red !important;
+    }
+    .confirm {
+      background-color: greenyellow !important;
+    }
+  }
+}
+
+@keyframes Drop_in {
+  from {
+    opacity: 0;
+    transform: translateY(-120%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-60%);
+  }
+}

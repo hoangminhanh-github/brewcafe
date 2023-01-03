@@ -4,13 +4,14 @@ import "./Salesman.scss";
 const Table = lazy(() => import("modules/salesman/components/Table/Table"));
 import { IAppState } from "redux/reducer";
 import { ROUTES } from "configs/Router";
+import { IUser } from "models/User.model";
+import Modal from "components/modal/comfirmModal/ComfirmModal";
 
 import React, { lazy, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { TfiFaceSmile } from "react-icons/tfi";
-import { IUser } from "models/User.model";
 
 const Salesman = () => {
   // const
@@ -24,7 +25,8 @@ const Salesman = () => {
   const salesmanNav = [
     { name: "Tất cả", value: "all" },
     { name: "Đang hoạt động", value: "active" },
-    { name: "Hết hàng", value: "soldout" },
+    { name: "Đang đợi hàng", value: "soldout" },
+    { name: "Ngừng hoạt động ", value: "un-active" },
   ];
   const params: any = { VendorId: user?.id };
   //state
@@ -39,6 +41,7 @@ const Salesman = () => {
   if (slug == "active") {
     params["leftIn"] = "> 0";
   }
+
   if (filterBand) {
     params["bandName"] = filterBand;
   }
@@ -49,8 +52,12 @@ const Salesman = () => {
     params["name"] = searchValue;
   }
   const getProductList = async () => {
+    let paranoid: string = "true";
+    if (slug == "un-active") {
+      paranoid = "false";
+    }
     const res = await axios.get("http://localhost:3001/product/list/user", {
-      params: params,
+      params: { params, paranoid },
     });
     setProducts(res.data);
   };

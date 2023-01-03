@@ -7,6 +7,7 @@ router.get('/list/user', ProductController.getProductByUser)
 router.get('/list/user', ProductController.getProductByUser)
 router.get('/detail', ProductController.getOneProduct)
 router.get('/list/name', ProductController.getAllProductName)
+router.delete('/delete', ProductController.deleteProducts)
 router.post('/new', upload.array('image', 5), ProductController.setNewProduct)
 
 router.get('/', ProductController.index)

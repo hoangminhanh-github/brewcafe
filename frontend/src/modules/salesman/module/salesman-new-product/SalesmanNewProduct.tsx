@@ -16,7 +16,6 @@ import { IAppState } from "redux/reducer";
 import { Action } from "redux";
 import { IUser } from "models/User.model";
 import Button from "components/button/Button";
-import debounce from "hooks/useDebounce";
 type IArrayField = Array<{
   label: string;
   name: string;
@@ -24,7 +23,6 @@ type IArrayField = Array<{
   type?: string;
   isRequire: boolean;
 }>;
-
 const SalesmanNewProduct = () => {
   const user: IUser | undefined = useSelector(
     (state: IAppState) => state.auth.user
@@ -85,9 +83,8 @@ const SalesmanNewProduct = () => {
     },
 
     validationSchema: Yup.object({
-      // name: Yup.string().required("Trường này bắt buộc!!"),
-      // price: Yup.string().required("trường này bắt buộc nhập số!!"),
-      // bandName: Yup.string().re
+      name: Yup.string().required("Trường này bắt buộc!!"),
+      price: Yup.string().required("trường này bắt buộc nhập số!!"),
     }),
     onSubmit: async (values: any) => {
       values.bandName = bandSelect;
@@ -131,7 +128,7 @@ const SalesmanNewProduct = () => {
   useEffect(() => {
     getBands();
   }, []);
-  console.log(formik);
+
   return (
     <div className="salesman-new-product">
       <div className="salesman-new-product-content">

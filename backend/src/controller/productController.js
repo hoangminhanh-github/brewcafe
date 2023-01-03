@@ -3,6 +3,69 @@ const passport = require('passport')
 const { Op } = require('sequelize')
 const LocalStrategy = require('passport-local').Strategy
 class ProductController {
+  //[get] /product/list/name
+  async getAllProductName(req, res, err) {
+    try {
+      const listName = await db.Product.findAll({
+        attributes: ['name', 'vendorEmail', 'leftIn'],
+      })
+      res.json(listName)
+    } catch {
+      res.status(401).json(err)
+    }
+  }
+  // [get] /products/list/:user
+  async getProductByUser(req, res) {
+    let { params, paranoid } = req?.query
+    if (params.leftIn == '> 0') {
+      params.leftIn = {
+        [Op.gt]: 0,
+      }
+    }
+    if (params.price) {
+      params.price = {
+        [Op.between]: params.price,
+      }
+    }
+    try {
+      let products = []
+      if (paranoid == 'false') {
+        products = await db.Product.findAll({
+          where: {
+            ...params,
+            deletedAt: {
+              [Op.not]: null,
+            },
+          },
+          paranoid: false,
+        })
+      } else {
+        products = await db.Product.findAll({
+          where: {
+            ...params,
+          },
+          paranoid,
+        })
+      }
+      res.json(products)
+    } catch (err) {
+      res.status(401).json(err)
+    }
+  }
+  // [get] /product/:slug
+  async getOneProduct(req, res) {
+    const { id } = req.query
+    const product = await db.Product.findOne({
+      where: {
+        id,
+      },
+      include: {
+        model: db.ProductImage,
+        attributes: ['image'],
+      },
+    })
+    res.json(product)
+  }
   // [post] / product/new
   async setNewProduct(req, res, next) {
     try {
@@ -18,48 +81,31 @@ class ProductController {
       res.status(401).json(err)
     }
   }
-  //[get] /product/list/name
-  async getAllProductName(req, res, err) {
+  // [delete] /product/delete/:id
+  async deleteProducts(req, res) {
+    const productDeleteList = req.body
     try {
-      const listName = await db.Product.findAll({
-        attributes: ['name', 'vendorEmail', 'leftIn'],
+      const products = await db.Product.findAll({
+        where: {
+          id: {
+            [Op.or]: productDeleteList,
+          },
+        },
       })
-      res.json(listName)
-    } catch {
+      products.forEach(async (item) => {
+        await db.Product.update(
+          { state: 'Ngừng kinh doanh', deletedAt: Date.now() },
+          {
+            where: {
+              id: item.id,
+            },
+          },
+        )
+      })
+      res.status(200).json('Delete success')
+    } catch (err) {
       res.status(401).json(err)
     }
-  }
-  // [get] /products/list/:user
-  async getProductByUser(req, res) {
-    let params = req?.query
-    if (params.leftIn == '> 0') {
-      params.leftIn = {
-        [Op.gt]: 0,
-      }
-    }
-    if (params.price) {
-      params.price = {
-        [Op.between]: params.price,
-      }
-    }
-    const products = await db.Product.findAll({
-      where: params,
-    })
-    res.json(products)
-  }
-  // [get] /product/:slug
-  async getOneProduct(req, res) {
-    const { id } = req.query
-    const product = await db.Product.findOne({
-      where: {
-        id,
-      },
-      include: {
-        model: db.ProductImage,
-        attributes: ['image'],
-      },
-    })
-    res.json(product)
   }
   // [get] /product/
   async index(req, res) {

@@ -3,10 +3,17 @@ import Button from "components/button/Button";
 const NO_PRODUCT = require("assets/image/no_product2.png");
 import IProduct from "models/Product.model";
 import { splitNumber } from "utils";
+import Modal from "components/modal/comfirmModal/ComfirmModal";
+import { ROUTES } from "configs/Router";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "configs/Router";
+import { RiCloseCircleFill } from "react-icons/ri";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
+import axios from "axios";
+import API_PATHS from "configs/api";
 
 interface IProps {
   slug?: string;
@@ -15,6 +22,25 @@ interface IProps {
 }
 const Table = ({ filterBand, products }: IProps) => {
   const navigate = useNavigate();
+  const [isModalDelete, setIsModalDelete] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState<IProduct>();
+  const handleDeleteClick = (item: IProduct) => {
+    setIsModalDelete((prev) => !prev);
+    if (!isModalDelete) {
+      setCurrentProduct(item);
+    }
+  };
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(API_PATHS.deleteProduct, {
+        data: [currentProduct?.id],
+      });
+      alert(res.data);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
     <div className="salesman-table">
       <div className="salesman-table__header">
@@ -46,11 +72,12 @@ const Table = ({ filterBand, products }: IProps) => {
                 <input type="checkbox" title="checkbox" />
               </th>
               <th className="salesman-table-head">Tên sản phẩm</th>
-              <th className="salesman-table-head">SKU</th>
+              <th className="salesman-table-head">Trạng thái</th>
               <th className="salesman-table-head">Giá</th>
               <th className="salesman-table-head">Hãng</th>
 
               <th className="salesman-table-head">Kho hàng</th>
+              <th className="salesman-table-head">Xoá</th>
             </tr>
           </thead>
           <tbody>
@@ -61,10 +88,20 @@ const Table = ({ filterBand, products }: IProps) => {
                     <input type="checkbox" title="f" />
                   </td>
                   <td>{item.name}</td>
-                  <td></td>
+                  <td>{item.state}</td>
                   <td>{splitNumber(item.price)} đ</td>
                   <td>{item.bandName}</td>
                   <td>{item.leftIn > 0 ? item.leftIn : "Hết hàng"}</td>
+                  <Tippy
+                    arrow="false"
+                    theme="light"
+                    placement="right"
+                    content={<span>Double Click để xóa!!</span>}
+                  >
+                    <td onClick={() => handleDeleteClick(item)}>
+                      <RiCloseCircleFill />
+                    </td>
+                  </Tippy>
                 </tr>
               ))
             ) : (
@@ -76,6 +113,15 @@ const Table = ({ filterBand, products }: IProps) => {
           </tbody>
         </table>
       </div>
+      <Modal
+        type="delete"
+        isOpen={isModalDelete}
+        customClass="salesman-new--delete"
+        size={{ width: "36%", height: "28%" }}
+        textHead="Xác nhận xóa sản phẩm"
+        textBody={`Xóa sản phẩm ${currentProduct?.name} ra khỏi kho hàng của bạn!!!`}
+        onAgree={handleDelete}
+      ></Modal>
     </div>
   );
 };

@@ -32,10 +32,10 @@ const Table = ({ filterBand, products }: IProps) => {
   };
   const handleDelete = async () => {
     try {
-      const res = await axios.delete(API_PATHS.deleteProduct, {
+      await axios.delete(API_PATHS.deleteProduct, {
         data: [currentProduct?.id],
       });
-      alert(res.data);
+      setIsModalDelete(false);
     } catch (err) {
       alert(err);
     }

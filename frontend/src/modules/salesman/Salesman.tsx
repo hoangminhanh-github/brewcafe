@@ -5,16 +5,19 @@ const Table = lazy(() => import("modules/salesman/components/Table/Table"));
 import { IAppState } from "redux/reducer";
 import { ROUTES } from "configs/Router";
 import { IUser } from "models/User.model";
-import Modal from "components/modal/comfirmModal/ComfirmModal";
+import API_PATHS from "configs/api";
 
 import React, { lazy, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { TfiFaceSmile } from "react-icons/tfi";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const Salesman = () => {
   // const
+  const PRODUCT_ON_PAGE = 6;
   const { slug } = useParams();
   const navigate = useNavigate();
   const user: IUser | undefined = useSelector(
@@ -34,6 +37,8 @@ const Salesman = () => {
   const [filterBand, setFilterBand] = useState<string>();
   const [filterRangePrice, setFilterRangePrice] = useState<number[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [amountProduct, setAmountProduct] = useState<number>(0);
   // logic
   if (slug == "soldout") {
     params["leftIn"] = 0;
@@ -56,14 +61,16 @@ const Salesman = () => {
     if (slug == "un-active") {
       paranoid = "false";
     }
-    const res = await axios.get("http://localhost:3001/product/list/user", {
-      params: { params, paranoid },
+    const res = await axios.get(API_PATHS.getProductByVendor, {
+      params: { params, paranoid, limit: PRODUCT_ON_PAGE, offset: page },
     });
-    setProducts(res.data);
+    setAmountProduct(res.data.amount);
+    setProducts(res.data.data);
+    window.scrollTo(0, 0);
   };
   useEffect(() => {
     getProductList();
-  }, [slug, filterBand, filterRangePrice]);
+  }, [slug, filterBand, filterRangePrice, page]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -104,9 +111,25 @@ const Salesman = () => {
               <Table products={products}></Table>
             </div>
           </div>
+          <div className="salesman-bottom">
+            <Stack className="salesman-bottom__pagination" spacing={2}>
+              <Pagination
+                count={Math.ceil(amountProduct / PRODUCT_ON_PAGE)}
+                page={page}
+                onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+                  setPage(value);
+                }}
+                variant="outlined"
+                shape="rounded"
+              />
+            </Stack>
+          </div>
         </div>
       ) : (
-        <span>Người không có thẩm quyền vào đây !!!</span>
+        <div>
+          Người không có thẩm quyền vào đây !!!{" "}
+          <Link to={ROUTES.home}>Trở về trang trủ</Link>
+        </div>
       )}
     </>
   );

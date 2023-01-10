@@ -74,6 +74,31 @@
       }
     }
   }
+  &__desc {
+    $padding-left: 10px;
+    grid-column: 1/4;
+    margin-top: 20px;
+    .header-desc {
+      margin-bottom: 10px;
+      align-items: center;
+      padding-left: $padding-left;
+      background-color: white;
+      display: flex;
+      color: #453828;
+      height: 40px;
+    }
+    .content-desc {
+      padding-left: $padding-left;
+      background-color: white;
+      p {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      .desc {
+        white-space: pre-wrap;
+      }
+    }
+  }
 }
 // 363
 // 410

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 import "./ProductRender.scss";
 import IProduct from "models/Product.model";
@@ -14,6 +16,11 @@ import {
 } from "components/layouts/components/sidebar/redux/sideBarFilterSlice";
 import API_PATHS from "configs/api";
 const ManualGrinder = () => {
+  const PRODUCT_ON_PAGE = 6;
+  const pageRef = useRef<any>();
+  const [page, setPage] = useState<number>(pageRef.current?.page || 1);
+  const [amountProduct, setAmountProduct] = useState<number>(1);
+
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const type = pathname.split("/")[1];
@@ -30,17 +37,20 @@ const ManualGrinder = () => {
         type,
         filterBandList,
         filterPriceList,
+        offset: page,
       },
     });
-    setProductList(res.data);
+    setAmountProduct(res?.data.amount ? res?.data.amount : 1);
+    setProductList(res?.data.data);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
     getProductList();
-  }, [filterBandList, filterPriceList, type]);
+  }, [filterBandList, filterPriceList, page, type]);
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    setPage(1);
+  }, [type]);
   return (
     <div className="product-render">
       <div className="product-render__name">
@@ -59,11 +69,25 @@ const ManualGrinder = () => {
           <></>
         </div>
         {productList?.length ? (
-          <div className="content__item-list">
-            {productList?.map((items: IProduct, idx) => (
-              <ProductItem key={idx} product={items}></ProductItem>
-            ))}
-          </div>
+          <>
+            <div className="content__item-list">
+              {productList?.map((items: IProduct, idx) => (
+                <ProductItem key={idx} product={items}></ProductItem>
+              ))}
+            </div>
+            <Stack className="content__pagination" spacing={2}>
+              <Pagination
+                ref={pageRef}
+                count={Math.ceil(amountProduct / PRODUCT_ON_PAGE)}
+                page={page}
+                onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+                  setPage(value);
+                }}
+                variant="outlined"
+                shape="rounded"
+              />
+            </Stack>
+          </>
         ) : (
           <div className="content__no-item">
             Không có sản phẩm nào trong danh mục này.

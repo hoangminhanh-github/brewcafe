@@ -11,7 +11,12 @@ const NO_IMG = require("assets/image/not_have_img.png");
 import { splitNumber } from "utils";
 import { setCartListRD } from "modules/cart/redux/cartSlice";
 import API_PATHS from "configs/api";
-const ProductDetails = () => {
+
+interface IProps {
+  sameProduct?: IProduct[];
+}
+
+const ProductDetails = ({ sameProduct }: IProps) => {
   const dispatch = useDispatch();
   const [productDetail, setProductDetail] = useState<IProduct>();
   const [buyCount, setBuyCount] = useState<number>(1);
@@ -39,6 +44,7 @@ const ProductDetails = () => {
   const handleBuy = () => {
     dispatch(setCartListRD({ ...productDetail, count: buyCount }));
   };
+  console.log(productDetail?.desc);
   return (
     <div className="container">
       <div className="product-detail">
@@ -123,6 +129,17 @@ const ProductDetails = () => {
         <div>
           <SomeProduct images={productDetail?.ProductImages}></SomeProduct>
           <img src={PRODUCT_DETAILS_IMG} width={"100%"} alt="" />
+        </div>
+        <div className="product-detail__desc">
+          <div className="header-desc">
+            <h4>Thông tin chi tiết</h4>
+          </div>
+          <div className="content-desc">
+            <p>Features and Benefits</p>
+            <span className="desc">
+              {productDetail?.desc ? productDetail.desc : "Đang cập nhật..."}
+            </span>
+          </div>
         </div>
       </div>
     </div>

@@ -242,10 +242,6 @@ const SalesmanNewProduct = () => {
               <p>Mô tả sản phẩm</p>
             </label>
             <textarea
-              // onChange={(e: any) => {
-              //   // const value = debounce(e.target.value, 500);
-              //   formik.handleChange();
-              // }}
               onChange={formik.handleChange}
               name="desc"
               id="duynhat"

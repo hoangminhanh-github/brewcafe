@@ -2,6 +2,8 @@ const db = require('../models')
 const passport = require('passport')
 const { Op } = require('sequelize')
 const LocalStrategy = require('passport-local').Strategy
+
+const PRODUCT_ON_PAGE = 6
 class ProductController {
   //[get] /product/list/name
   async getAllProductName(req, res, err) {
@@ -16,8 +18,8 @@ class ProductController {
   }
   // [get] /products/list/:user
   async getProductByUser(req, res) {
-    let { params, paranoid } = req?.query
-    if (params.leftIn == '> 0') {
+    let { params, paranoid, offset = 0, limit = PRODUCT_ON_PAGE } = req?.query
+    if (params?.leftIn == '> 0') {
       params.leftIn = {
         [Op.gt]: 0,
       }
@@ -28,6 +30,11 @@ class ProductController {
       }
     }
     try {
+      const amount = await db.Product.count({
+        where: {
+          VendorId: params.VendorId,
+        },
+      })
       let products = []
       if (paranoid == 'false') {
         products = await db.Product.findAll({
@@ -37,6 +44,8 @@ class ProductController {
               [Op.not]: null,
             },
           },
+          limit: Number(limit),
+          offset: offset > 1 ? Number(limit * (offset - 1)) : 0,
           paranoid: false,
         })
       } else {
@@ -44,10 +53,12 @@ class ProductController {
           where: {
             ...params,
           },
+          limit: Number(limit),
+          offset: offset > 1 ? Number(limit * (offset - 1)) : 0,
           paranoid,
         })
       }
-      res.json(products)
+      res.json({ data: products, amount })
     } catch (err) {
       res.status(401).json(err)
     }
@@ -109,30 +120,40 @@ class ProductController {
   }
   // [get] /product/
   async index(req, res) {
-    const { type, filterBandList = [], filterPriceList = [] } = req.query
-    const productList = await db.Product.findAll({
-      where: {
-        type,
-        bandName: filterBandList?.length
-          ? {
-              [Op.or]: filterBandList,
-            }
-          : { [Op.ne]: 'khongcothat' },
-        price:
-          filterPriceList?.length > 0
+    const { type, filterBandList = [], filterPriceList = [], offset = 1, limit = PRODUCT_ON_PAGE } = req.query
+    try {
+      const productList = await db.Product.findAll({
+        where: {
+          type,
+          bandName: filterBandList?.length
             ? {
-                [Op.between]: filterPriceList[0].split('-'),
+                [Op.or]: filterBandList,
               }
-            : {
-                [Op.ne]: 'khongcothat',
-              },
-      },
-      include: {
-        model: db.ProductImage,
-        attributes: ['image'],
-      },
-    })
-    res.json(productList)
+            : { [Op.ne]: 'khongcothat' },
+          price:
+            filterPriceList?.length > 0
+              ? {
+                  [Op.between]: filterPriceList[0].split('-'),
+                }
+              : {
+                  [Op.ne]: 'khongcothat',
+                },
+        },
+        include: {
+          model: db.ProductImage,
+        },
+        offset: offset > 1 ? Number(PRODUCT_ON_PAGE * (offset - 1)) : 0,
+        limit,
+      })
+      const amount = await db.Product.count({
+        where: {
+          type,
+        },
+      })
+      res.json({ data: productList, amount })
+    } catch (err) {
+      res.status(401).json(err)
+    }
   }
 }
 

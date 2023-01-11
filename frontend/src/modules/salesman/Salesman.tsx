@@ -14,6 +14,7 @@ import axios from "axios";
 import { TfiFaceSmile } from "react-icons/tfi";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import Loading from "components/loading/Loading";
 
 const Salesman = () => {
   // const
@@ -33,6 +34,7 @@ const Salesman = () => {
   ];
   const params: any = { VendorId: user?.id };
   //state
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filterBand, setFilterBand] = useState<string>();
   const [filterRangePrice, setFilterRangePrice] = useState<number[]>([]);
@@ -61,6 +63,7 @@ const Salesman = () => {
     params["name"] = searchValue;
   }
   const getProductList = async () => {
+    setIsLoading(true);
     let paranoid: string = "true";
     if (slug == "un-active") {
       paranoid = "false";
@@ -70,13 +73,16 @@ const Salesman = () => {
         params,
         paranoid,
         limit: PRODUCT_ON_PAGE,
-        offset: page,
+        offset: page == 1 ? 0 : page,
         sort: sortBy.sort,
         order_by: sortBy.order_by,
       },
     });
     setAmountProduct(res.data.amount);
-    setProducts(res.data.data);
+    setTimeout(() => {
+      setProducts(res.data.data);
+      setIsLoading(false);
+    }, 1000);
     window.scrollTo(0, 0);
   };
   useEffect(() => {
@@ -146,6 +152,7 @@ const Salesman = () => {
           <Link to={ROUTES.home}>Trở về trang trủ</Link>
         </div>
       )}
+      <Loading isLoading={isLoading}></Loading>
     </>
   );
 };

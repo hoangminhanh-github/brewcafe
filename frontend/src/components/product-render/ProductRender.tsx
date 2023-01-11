@@ -10,14 +10,13 @@ import "./ProductRender.scss";
 import IProduct from "models/Product.model";
 import ProductItem from "components/product-item/ProductItem";
 import { IAppState } from "redux/reducer";
-import {
-  setFilterByBandRD,
-  setFilterByPriceRD,
-} from "components/layouts/components/sidebar/redux/sideBarFilterSlice";
+
 import API_PATHS from "configs/api";
+import Loading from "components/loading/Loading";
 const ManualGrinder = () => {
   const PRODUCT_ON_PAGE = 6;
   const pageRef = useRef<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(pageRef.current?.page || 1);
   const [amountProduct, setAmountProduct] = useState<number>(1);
   const [sortBy, setSortBy] = useState<{ sort?: string; order_by?: string }>({
@@ -36,6 +35,7 @@ const ManualGrinder = () => {
   );
   const [productList, setProductList] = useState<Array<IProduct>>();
   const getProductList = async () => {
+    setIsLoading(true);
     const res = await axios.get(API_PATHS.getProducts, {
       params: {
         type,
@@ -45,6 +45,9 @@ const ManualGrinder = () => {
         ...sortBy,
       },
     });
+    await new Promise((resolve) =>
+      setTimeout(() => resolve(setIsLoading(false)), 300)
+    );
     setAmountProduct(res?.data.amount ? res?.data.amount : 1);
     setProductList(res?.data.data);
     window.scrollTo(0, 0);
@@ -62,6 +65,7 @@ const ManualGrinder = () => {
     const orderBy = e.target.value.split("_")[1];
     setSortBy({ sort: property, order_by: orderBy });
   };
+
   return (
     <div className="product-render">
       <div className="product-render__name">
@@ -116,6 +120,7 @@ const ManualGrinder = () => {
           />
         </Stack>
       </div>
+      <Loading isLoading={isLoading}></Loading>
     </div>
   );
 };

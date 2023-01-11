@@ -44,6 +44,9 @@ class ProductController {
               [Op.not]: null,
             },
           },
+          include: {
+            model: db.ProductImage,
+          },
           limit: Number(limit),
           offset: offset > 1 ? Number(limit * (offset - 1)) : 0,
           order: [[sort, order_by]],
@@ -53,6 +56,9 @@ class ProductController {
         products = await db.Product.findAll({
           where: {
             ...params,
+          },
+          include: {
+            model: db.ProductImage,
           },
           limit: Number(limit),
           offset: offset > 1 ? Number(limit * (offset - 1)) : 0,

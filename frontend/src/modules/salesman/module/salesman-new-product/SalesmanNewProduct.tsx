@@ -6,30 +6,38 @@ import { BiImageAdd } from "react-icons/bi";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Action } from "redux";
 
 import API_PATHS from "configs/api";
 import { IBand } from "models/Band.model";
 import "./SalesmanNewProduct.scss";
-import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { IAppState } from "redux/reducer";
-import { Action } from "redux";
 import { IUser } from "models/User.model";
 import Button from "components/button/Button";
+import Loading from "components/loading/Loading";
+import { ROUTES } from "configs/Router";
+import IProduct from "models/Product.model";
 type IArrayField = Array<{
   label: string;
   name: string;
   placeholder: string;
   type?: string;
   isRequire: boolean;
+  value?: string | number;
 }>;
 const SalesmanNewProduct = () => {
   const user: IUser | undefined = useSelector(
     (state: IAppState) => state.auth.user
   );
-  const dispatch =
-    useDispatch<ThunkDispatch<IAppState, null, Action<string>>>();
+  // const dispatch =
+  //   useDispatch<ThunkDispatch<IAppState, null, Action<string>>>();
+  const { state } = useLocation();
+  const productEdit: IProduct = state;
   const imgRef = useRef<any>();
+  const navigate = useNavigate();
   const ARRAY_FORM_FIELD: IArrayField = [
     {
       label: "Tên sản phẩm",
@@ -37,6 +45,7 @@ const SalesmanNewProduct = () => {
       placeholder: "Nhập vào",
       type: "text",
       isRequire: true,
+      value: productEdit?.name || "",
     },
     {
       label: "Gía sản phẩm",
@@ -44,6 +53,7 @@ const SalesmanNewProduct = () => {
       placeholder: "Nhập vào giá",
       type: "number",
       isRequire: true,
+      value: productEdit?.price || "false",
     },
     {
       label: "Loại sản phẩm",
@@ -51,6 +61,7 @@ const SalesmanNewProduct = () => {
       placeholder: "Nhập vào loại sản phẩm",
       type: "text",
       isRequire: true,
+      value: productEdit?.type || "",
     },
     {
       label: "Số lượng hàng",
@@ -58,11 +69,17 @@ const SalesmanNewProduct = () => {
       placeholder: "Nhập vào số lượng hàng",
       type: "number",
       isRequire: false,
+      value: productEdit?.leftIn || "",
     },
   ];
   const [bands, setBands] = useState<IBand[]>([]);
-  const [bandSelect, setBandSelect] = useState<string>("");
-  const [images, setImages] = useState<any>([]);
+  const [bandSelect, setBandSelect] = useState<string>(
+    productEdit?.bandName || ""
+  );
+  const [images, setImages] = useState<any>(
+    productEdit ? productEdit?.ProductImages : []
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const getBands = async () => {
     const res = await axios.get(API_PATHS.getBands);
     setBands(res.data);
@@ -70,12 +87,12 @@ const SalesmanNewProduct = () => {
 
   const formik: any = useFormik({
     initialValues: {
-      name: "",
-      price: 0,
-      leftIn: 0,
-      bandName: "",
-      desc: "",
-      type: "",
+      name: productEdit ? productEdit?.name : "",
+      price: productEdit.price || "false",
+      leftIn: productEdit.leftIn || "false",
+      bandName: productEdit.bandName || "",
+      desc: productEdit.bandName || "",
+      type: productEdit.type || "",
       VendorId: user?.id,
       vendorEmail: user?.email,
       BandId: "",
@@ -83,10 +100,11 @@ const SalesmanNewProduct = () => {
     },
 
     validationSchema: Yup.object({
-      name: Yup.string().required("Trường này bắt buộc!!"),
-      price: Yup.string().required("trường này bắt buộc nhập số!!"),
+      // name: Yup.string().required("Trường này bắt buộc!!"),
+      // price: Yup.string().required("trường này bắt buộc nhập số!!"),
     }),
     onSubmit: async (values: any) => {
+      setIsLoading(true);
       values.bandName = bandSelect;
       values.BandId = bands?.find((item) =>
         item.name == bandSelect ? item.id : ""
@@ -101,15 +119,14 @@ const SalesmanNewProduct = () => {
         formData.append("image", item);
       });
       try {
-        const res = await axios.post(
-          "http://localhost:3001/product/new",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
+        await axios.post("http://localhost:3001/product/new", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        await setIsLoading(false);
         alert("Thêm sản phẩm thành công !!");
+        await navigate(ROUTES.home);
       } catch (err) {
+        setIsLoading(false);
         alert(err);
       }
     },
@@ -167,10 +184,7 @@ const SalesmanNewProduct = () => {
             <div className="upload-image__img-list">
               {images?.map((item: any, idx: any) => (
                 <div className="list-item" key={idx}>
-                  <img
-                    src={require(`assets/image/products/${item.name}`)}
-                    alt=""
-                  />
+                  <img src={item.image} alt="" />
                   <span
                     className="icons"
                     onClick={() => handleRemoveImage(item.name)}
@@ -192,10 +206,8 @@ const SalesmanNewProduct = () => {
                 type={item.type ? item.type : "text"}
                 placeholder={item.placeholder}
                 title={item.label}
-                // onChange={() => {
-                //   formik.handleChange();
-                // }}
-                onChange={formik.handleChange}
+                defaultValue={item?.value}
+                onChange={(e: any) => formik.handleChange(e.target.value)}
               />
               {formik.errors[item.name] && formik.touched[item.name] && (
                 <span className="mess-err">{`${
@@ -228,7 +240,7 @@ const SalesmanNewProduct = () => {
                 type="text"
                 title="h"
                 placeholder="Chọn hãng hàng có sẵn"
-                value={bandSelect}
+                value={!bandSelect ? productEdit?.bandName : bandSelect}
                 style={{ textTransform: "capitalize" }}
                 readOnly
               />
@@ -245,6 +257,7 @@ const SalesmanNewProduct = () => {
               onChange={formik.handleChange}
               name="desc"
               id="duynhat"
+              defaultValue={productEdit?.desc}
             ></textarea>
           </div>
           {/* <button type="submit">Submit!!</button> */}
@@ -258,6 +271,7 @@ const SalesmanNewProduct = () => {
           ></Button>
         </form>
       </div>
+      <Loading isLoading={isLoading}></Loading>
     </div>
   );
 };

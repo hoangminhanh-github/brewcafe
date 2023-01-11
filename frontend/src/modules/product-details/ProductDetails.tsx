@@ -46,19 +46,12 @@ const ProductDetails = () => {
     const hehe = async () => {
       setLoading(true);
       await axios.get("https://jsonplaceholder.typicode.com/photos");
-      // fetch("https://jsonplaceholder.typicode.com/photos").then(() => {
-      //   setTimeout(() => {
-      //     setLoading(false);
-      //   }, 3000);
-      // });
       setTimeout(() => {
         setLoading(false);
-        console.log("first");
       }, 3000);
     };
     hehe();
   }, []);
-  console.log(loading);
   return (
     <div className="container">
       <div className="product-detail">

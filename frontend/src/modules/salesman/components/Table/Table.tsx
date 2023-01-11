@@ -161,7 +161,15 @@ const Table = ({ filterBand, products, setSortBy, sortBy }: IProps) => {
                   <td>
                     <input type="checkbox" title="f" />
                   </td>
-                  <td>{item.name}</td>
+                  <td
+                    onClick={() => {
+                      navigate(ROUTES.salesman_newProduct, {
+                        state: item,
+                      });
+                    }}
+                  >
+                    {item.name}
+                  </td>
                   <td>{item.state}</td>
                   <td>{splitNumber(item.price)} đ </td>
                   <td>{item.bandName}</td>

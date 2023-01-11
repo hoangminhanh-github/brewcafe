@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -20,6 +20,10 @@ const ManualGrinder = () => {
   const pageRef = useRef<any>();
   const [page, setPage] = useState<number>(pageRef.current?.page || 1);
   const [amountProduct, setAmountProduct] = useState<number>(1);
+  const [sortBy, setSortBy] = useState<{ sort?: string; order_by?: string }>({
+    sort: "id",
+    order_by: "asc",
+  });
 
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -38,6 +42,7 @@ const ManualGrinder = () => {
         filterBandList,
         filterPriceList,
         offset: page,
+        ...sortBy,
       },
     });
     setAmountProduct(res?.data.amount ? res?.data.amount : 1);
@@ -47,10 +52,16 @@ const ManualGrinder = () => {
 
   useEffect(() => {
     getProductList();
-  }, [filterBandList, filterPriceList, page, type]);
+  }, [filterBandList, filterPriceList, page, type, sortBy]);
   useEffect(() => {
     setPage(1);
-  }, [type]);
+  }, [type, filterBandList, filterPriceList, sortBy]);
+
+  const handleSortChange = (e: any) => {
+    const property = e.target.value.split("_")[0];
+    const orderBy = e.target.value.split("_")[1];
+    setSortBy({ sort: property, order_by: orderBy });
+  };
   return (
     <div className="product-render">
       <div className="product-render__name">
@@ -60,39 +71,50 @@ const ManualGrinder = () => {
       <div className="content">
         <div className="content__sort">
           <p>Sắp xếp : </p>
-          <select title="sort" name="sort" id="">
-            <option value="">A to Z</option>
-            <option value="">Z to A</option>
-            <option value=""> Gía tăng dần</option>
-            <option value=""> Gía giảm dần</option>
+          <select
+            title="sort"
+            name="sort"
+            id=""
+            onChange={(e: any) => handleSortChange(e)}
+          >
+            <option value="name_asc">A to Z</option>
+            <option value="name_desc">Z to A</option>
+            <option value="price_asc"> Gía tăng dần</option>
+            <option value="price_desc"> Gía giảm dần</option>
           </select>
           <></>
         </div>
-        {productList?.length ? (
+        {(productList?.length && (
           <>
             <div className="content__item-list">
               {productList?.map((items: IProduct, idx) => (
-                <ProductItem key={idx} product={items}></ProductItem>
+                <ProductItem
+                  sameProducts={productList
+                    .filter((sameItem) => sameItem.id != items.id)
+                    .slice(0, 3)}
+                  key={idx}
+                  product={items}
+                ></ProductItem>
               ))}
             </div>
-            <Stack className="content__pagination" spacing={2}>
-              <Pagination
-                ref={pageRef}
-                count={Math.ceil(amountProduct / PRODUCT_ON_PAGE)}
-                page={page}
-                onChange={(e: React.ChangeEvent<unknown>, value: number) => {
-                  setPage(value);
-                }}
-                variant="outlined"
-                shape="rounded"
-              />
-            </Stack>
           </>
-        ) : (
+        )) || (
           <div className="content__no-item">
             Không có sản phẩm nào trong danh mục này.
           </div>
         )}
+        <Stack className="content__pagination" spacing={2}>
+          <Pagination
+            ref={pageRef}
+            count={Math.ceil(amountProduct / PRODUCT_ON_PAGE)}
+            page={page}
+            onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+              setPage(value);
+            }}
+            variant="outlined"
+            shape="rounded"
+          />
+        </Stack>
       </div>
     </div>
   );

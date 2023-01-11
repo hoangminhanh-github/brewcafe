@@ -39,6 +39,10 @@ const Salesman = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [amountProduct, setAmountProduct] = useState<number>(0);
+  const [sortBy, setSortBy] = useState<{ sort?: string; order_by?: string }>({
+    sort: "id",
+    order_by: "asc",
+  });
   // logic
   if (slug == "soldout") {
     params["leftIn"] = 0;
@@ -62,7 +66,14 @@ const Salesman = () => {
       paranoid = "false";
     }
     const res = await axios.get(API_PATHS.getProductByVendor, {
-      params: { params, paranoid, limit: PRODUCT_ON_PAGE, offset: page },
+      params: {
+        params,
+        paranoid,
+        limit: PRODUCT_ON_PAGE,
+        offset: page,
+        sort: sortBy.sort,
+        order_by: sortBy.order_by,
+      },
     });
     setAmountProduct(res.data.amount);
     setProducts(res.data.data);
@@ -70,7 +81,7 @@ const Salesman = () => {
   };
   useEffect(() => {
     getProductList();
-  }, [slug, filterBand, filterRangePrice, page]);
+  }, [slug, filterBand, filterRangePrice, page, sortBy]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -108,7 +119,11 @@ const Salesman = () => {
               ))}
             </div>
             <div className="salesman-body-content">
-              <Table products={products}></Table>
+              <Table
+                products={products}
+                setSortBy={setSortBy}
+                sortBy={sortBy}
+              ></Table>
             </div>
           </div>
           <div className="salesman-bottom">

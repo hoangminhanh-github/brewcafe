@@ -5,6 +5,7 @@ import IProduct from "models/Product.model";
 import { splitNumber } from "utils";
 import Modal from "components/modal/comfirmModal/ComfirmModal";
 import { ROUTES } from "configs/Router";
+import API_PATHS from "configs/api";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,17 +14,28 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import axios from "axios";
-import API_PATHS from "configs/api";
+import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 
 interface IProps {
   slug?: string;
   filterBand?: string;
   products: IProduct[];
+  sortBy: {
+    sort?: string;
+    order_by?: string;
+  };
+  setSortBy: React.Dispatch<
+    React.SetStateAction<{
+      sort?: string | undefined;
+      order_by?: string | undefined;
+    }>
+  >;
 }
-const Table = ({ filterBand, products }: IProps) => {
+const Table = ({ filterBand, products, setSortBy, sortBy }: IProps) => {
   const navigate = useNavigate();
   const [isModalDelete, setIsModalDelete] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<IProduct>();
+  // const [isPriceSort,setIsPriceSort]=useState<boolean>(false)
   const handleDeleteClick = (item: IProduct) => {
     setIsModalDelete((prev) => !prev);
     if (!isModalDelete) {
@@ -39,6 +51,12 @@ const Table = ({ filterBand, products }: IProps) => {
     } catch (err) {
       alert(err);
     }
+  };
+  const handleSortPrice = ({ sort = "", order_by = "" }) => {
+    setSortBy({ sort, order_by });
+  };
+  const handleSortLeftIn = ({ sort = "", order_by = "" }) => {
+    setSortBy({ sort, order_by });
   };
 
   return (
@@ -73,10 +91,66 @@ const Table = ({ filterBand, products }: IProps) => {
               </th>
               <th className="salesman-table-head">Tên sản phẩm</th>
               <th className="salesman-table-head">Trạng thái</th>
-              <th className="salesman-table-head">Giá</th>
+              <th className="salesman-table-head center-content">
+                Giá
+                <span className="slm-btn-icon__list ">
+                  <span
+                    className={`slm-btn-icon__icons ${
+                      sortBy.sort == "price" && sortBy.order_by == "asc"
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      handleSortPrice({ sort: "price", order_by: "asc" })
+                    }
+                  >
+                    <RiArrowUpSFill></RiArrowUpSFill>
+                  </span>
+                  <span
+                    className={`slm-btn-icon__icons ${
+                      sortBy.sort == "price" && sortBy.order_by == "desc"
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      handleSortPrice({ sort: "price", order_by: "desc" })
+                    }
+                  >
+                    <RiArrowDownSFill></RiArrowDownSFill>
+                  </span>
+                </span>
+              </th>
               <th className="salesman-table-head">Hãng</th>
 
-              <th className="salesman-table-head">Kho hàng</th>
+              <th className="salesman-table-head center-content">
+                Kho hàng
+                <span className="slm-btn-icon__list">
+                  <span
+                    className={`slm-btn-icon__icons ${
+                      sortBy.sort == "leftIn" && sortBy.order_by == "asc"
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      handleSortLeftIn({ sort: "LeftIn", order_by: "asc" })
+                    }
+                  >
+                    <RiArrowUpSFill></RiArrowUpSFill>
+                  </span>
+                  <span
+                    className={`slm-btn-icon__icons ${
+                      sortBy.sort == "leftIn" && sortBy.order_by == "desc"
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      handleSortLeftIn({ sort: "leftIn", order_by: "desc" })
+                    }
+                  >
+                    <RiArrowDownSFill></RiArrowDownSFill>
+                  </span>
+                </span>
+              </th>
               <th className="salesman-table-head">Xoá</th>
             </tr>
           </thead>
@@ -89,7 +163,7 @@ const Table = ({ filterBand, products }: IProps) => {
                   </td>
                   <td>{item.name}</td>
                   <td>{item.state}</td>
-                  <td>{splitNumber(item.price)} đ</td>
+                  <td>{splitNumber(item.price)} đ </td>
                   <td>{item.bandName}</td>
                   <td>{item.leftIn > 0 ? item.leftIn : "Hết hàng"}</td>
                   <Tippy

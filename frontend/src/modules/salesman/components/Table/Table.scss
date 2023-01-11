@@ -19,7 +19,7 @@
       tr {
         width: 100%;
         display: grid;
-        grid-template-columns: 10% 30% 10% 20% 10% 10% 10%;
+        grid-template-columns: 10% 30% 10% 15% 10% 15% 10%;
         margin-bottom: 20px;
       }
       td {
@@ -37,4 +37,18 @@
   margin-bottom: 20px;
   flex-direction: column;
   gap: 2px;
+}
+.slm-btn-icon__list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 4px;
+  // display: flex;
+  // flex-direction: column;
+}
+.slm-btn-icon__icons {
+  display: contents;
+  cursor: pointer;
+  &.active {
+    color: $orange-color;
+  }
 }

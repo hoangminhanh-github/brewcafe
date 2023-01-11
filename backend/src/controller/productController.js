@@ -18,7 +18,7 @@ class ProductController {
   }
   // [get] /products/list/:user
   async getProductByUser(req, res) {
-    let { params, paranoid, offset = 0, limit = PRODUCT_ON_PAGE } = req?.query
+    let { params, paranoid, offset = 0, limit = PRODUCT_ON_PAGE, sort = 'id', order_by = 'asc' } = req?.query
     if (params?.leftIn == '> 0') {
       params.leftIn = {
         [Op.gt]: 0,
@@ -46,6 +46,7 @@ class ProductController {
           },
           limit: Number(limit),
           offset: offset > 1 ? Number(limit * (offset - 1)) : 0,
+          order: [[sort, order_by]],
           paranoid: false,
         })
       } else {
@@ -55,6 +56,7 @@ class ProductController {
           },
           limit: Number(limit),
           offset: offset > 1 ? Number(limit * (offset - 1)) : 0,
+          order: [[sort, order_by]],
           paranoid,
         })
       }
@@ -120,7 +122,15 @@ class ProductController {
   }
   // [get] /product/
   async index(req, res) {
-    const { type, filterBandList = [], filterPriceList = [], offset = 1, limit = PRODUCT_ON_PAGE } = req.query
+    const {
+      type,
+      filterBandList = [],
+      filterPriceList = [],
+      offset = 1,
+      limit = PRODUCT_ON_PAGE,
+      sort = 'name',
+      order_by = 'asc',
+    } = req.query
     try {
       const productList = await db.Product.findAll({
         where: {
@@ -143,7 +153,8 @@ class ProductController {
           model: db.ProductImage,
         },
         offset: offset > 1 ? Number(PRODUCT_ON_PAGE * (offset - 1)) : 0,
-        limit,
+        limit: Number(limit),
+        order: (sort && order_by && [[sort, order_by]]) || [['id', 'asc']],
       })
       const amount = await db.Product.count({
         where: {

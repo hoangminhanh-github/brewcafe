@@ -84,10 +84,10 @@ const SideBar = () => {
             <Link to={ROUTES.manual_grinder}>Manual Grinder</Link>
           </li>
           <li>
-            <Link to={ROUTES.home}>Ấm pha cafe</Link>
+            <Link to={ROUTES.manual_cafe}>Ấm pha cafe</Link>
           </li>
           <li>
-            <Link to={ROUTES.home}>SALE</Link>
+            <Link to={ROUTES.manual_cafe}>SALE</Link>
           </li>
         </ul>
       </div>

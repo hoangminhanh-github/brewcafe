@@ -9,11 +9,14 @@ import "./ProductItem.scss";
 import IProduct from "models/Product.model";
 import { splitNumber } from "utils";
 import { setCartListRD } from "modules/cart/redux/cartSlice";
+import { useNavigate } from "react-router-dom";
 interface IProps {
   key: number | string;
   product: IProduct;
+  sameProducts?: IProduct[];
 }
-const ProductItem = ({ product }: IProps) => {
+const ProductItem = ({ product, sameProducts }: IProps) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const firstImageProduct = product.ProductImages[0];
@@ -21,17 +24,21 @@ const ProductItem = ({ product }: IProps) => {
     e.preventDefault();
     dispatch(setCartListRD(product));
   };
-
+  const handleClick = () => {
+    navigate(`${location.pathname}/${product.id}`, {
+      state: sameProducts,
+    });
+  };
   return (
     <div className="content-items">
-      <Link to={`${location.pathname}/${product.id}`}>
+      <div onClick={handleClick}>
         <div className="content-items__sale">-10%</div>
         {/* onHover */}
         <div className="content-items__icons--wrapper">
           <div className="content-items__icons">
-            <Link to={`${location.pathname}/${product.id}`}>
+            <div onClick={handleClick}>
               <AiOutlineEye></AiOutlineEye>
-            </Link>
+            </div>
           </div>
           <div className="content-items__icons">
             <MdOutlineShoppingBasket
@@ -53,7 +60,7 @@ const ProductItem = ({ product }: IProps) => {
           </span>
           <span className="content-items__price--old">790.000₫</span>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

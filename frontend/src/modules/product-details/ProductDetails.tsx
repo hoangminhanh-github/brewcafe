@@ -6,21 +6,19 @@ import { useDispatch } from "react-redux";
 import "./ProductDetails.scss";
 import IProduct from "models/Product.model";
 import Button from "components/button/Button";
-import SomeProduct from "modules/product-details/components/same-product/SameProduct";
+import SameProduct from "modules/product-details/components/same-product/SameProduct";
 const NO_IMG = require("assets/image/not_have_img.png");
 import { splitNumber } from "utils";
 import { setCartListRD } from "modules/cart/redux/cartSlice";
 import API_PATHS from "configs/api";
 
-interface IProps {
-  sameProduct?: IProduct[];
-}
-
-const ProductDetails = ({ sameProduct }: IProps) => {
+const ProductDetails = () => {
+  const { state } = useLocation();
   const dispatch = useDispatch();
   const [productDetail, setProductDetail] = useState<IProduct>();
   const [buyCount, setBuyCount] = useState<number>(1);
   const [currentImg, setCurrentImg] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
   //
   const PRODUCT_IMG_LIST = productDetail?.ProductImages;
   const PRODUCT_DETAILS_IMG = require("assets/image/banner_product__detail.webp");
@@ -36,7 +34,7 @@ const ProductDetails = ({ sameProduct }: IProps) => {
   };
   useEffect(() => {
     getDetails();
-  }, []);
+  }, [slug]);
 
   const handleClickImage = (idx: number) => {
     setCurrentImg(idx);
@@ -44,7 +42,23 @@ const ProductDetails = ({ sameProduct }: IProps) => {
   const handleBuy = () => {
     dispatch(setCartListRD({ ...productDetail, count: buyCount }));
   };
-  console.log(productDetail?.desc);
+  useEffect(() => {
+    const hehe = async () => {
+      setLoading(true);
+      await axios.get("https://jsonplaceholder.typicode.com/photos");
+      // fetch("https://jsonplaceholder.typicode.com/photos").then(() => {
+      //   setTimeout(() => {
+      //     setLoading(false);
+      //   }, 3000);
+      // });
+      setTimeout(() => {
+        setLoading(false);
+        console.log("first");
+      }, 3000);
+    };
+    hehe();
+  }, []);
+  console.log(loading);
   return (
     <div className="container">
       <div className="product-detail">
@@ -127,7 +141,7 @@ const ProductDetails = ({ sameProduct }: IProps) => {
           </div>
         </div>
         <div>
-          <SomeProduct images={productDetail?.ProductImages}></SomeProduct>
+          <SameProduct currentProductId={id} sameProducts={state}></SameProduct>
           <img src={PRODUCT_DETAILS_IMG} width={"100%"} alt="" />
         </div>
         <div className="product-detail__desc">

@@ -19,6 +19,7 @@ const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   return (
     <div className="homepage">
       <img className="homepage__img" src={HOMEPAGE_IMG} alt="" />

@@ -84,15 +84,14 @@ const SalesmanNewProduct = () => {
     const res = await axios.get(API_PATHS.getBands);
     setBands(res.data);
   };
-
   const formik: any = useFormik({
     initialValues: {
       name: productEdit ? productEdit?.name : "",
-      price: productEdit.price || "false",
-      leftIn: productEdit.leftIn || "false",
-      bandName: productEdit.bandName || "",
-      desc: productEdit.bandName || "",
-      type: productEdit.type || "",
+      price: productEdit?.price || "false",
+      leftIn: productEdit?.leftIn || "false",
+      bandName: productEdit?.bandName || "",
+      desc: productEdit?.desc || "",
+      type: productEdit?.type || "",
       VendorId: user?.id,
       vendorEmail: user?.email,
       BandId: "",
@@ -117,11 +116,22 @@ const SalesmanNewProduct = () => {
       keyArr.forEach((item) => formData.append(item, values[item]));
       images.forEach((item: any) => {
         formData.append("image", item);
+        if (item.id) formData.append("oldImage", item.id);
       });
       try {
-        await axios.post("http://localhost:3001/product/new", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        if (!productEdit) {
+          await axios.post("http://localhost:3001/product/new", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+        } else {
+          await axios.post(
+            `${API_PATHS.editProduct}${productEdit.id}`,
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+        }
         await setIsLoading(false);
         alert("Thêm sản phẩm thành công !!");
         await navigate(ROUTES.home);
@@ -139,13 +149,12 @@ const SalesmanNewProduct = () => {
     }
     setImages(convertArr);
   };
-  const handleRemoveImage = (param: string) => {
-    setImages(images.filter((item: any) => item.name != param));
+  const handleRemoveImage = (param: number) => {
+    setImages(images.filter((item: any) => images.indexOf(item) != param));
   };
   useEffect(() => {
     getBands();
   }, []);
-
   return (
     <div className="salesman-new-product">
       <div className="salesman-new-product-content">
@@ -184,10 +193,15 @@ const SalesmanNewProduct = () => {
             <div className="upload-image__img-list">
               {images?.map((item: any, idx: any) => (
                 <div className="list-item" key={idx}>
-                  <img src={item.image} alt="" />
+                  <img
+                    src={
+                      item.lastModified ? URL.createObjectURL(item) : item.image
+                    }
+                    alt=""
+                  />
                   <span
                     className="icons"
-                    onClick={() => handleRemoveImage(item.name)}
+                    onClick={() => handleRemoveImage(images.indexOf(item))}
                   >
                     <AiFillCloseCircle />
                   </span>
@@ -207,7 +221,7 @@ const SalesmanNewProduct = () => {
                 placeholder={item.placeholder}
                 title={item.label}
                 defaultValue={item?.value}
-                onChange={(e: any) => formik.handleChange(e.target.value)}
+                onChange={formik.handleChange}
               />
               {formik.errors[item.name] && formik.touched[item.name] && (
                 <span className="mess-err">{`${

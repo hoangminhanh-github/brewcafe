@@ -38,7 +38,7 @@ const SomeProduct = ({ currentProductId = "", sameProducts = [] }: IProps) => {
         <div className="list">
           {sameProducts?.map((item) => (
             <div className="list-item" key={item.id}>
-              <img src={item.ProductImages[0].image} alt="" />
+              <img src={item.ProductImages[0]?.image} alt="" />
               <div className="list-item__info">
                 <span className="list-item__info-name">{item.name}</span>
                 <span className="list-item__info-price">

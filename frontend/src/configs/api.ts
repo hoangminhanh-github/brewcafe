@@ -22,6 +22,7 @@ const API_PATHS = {
   getProducts: `${getBaseUrl(APIService.public)}/product`,
   getProductByVendor: `${getBaseUrl(APIService.public)}/product/list/user`,
   getProductDetail: `${getBaseUrl(APIService.public)}/product/detail`,
+  editProduct: `${getBaseUrl(APIService.public)}/product/edit/`,
   deleteProduct: `${getBaseUrl(APIService.public)}/product/delete`,
   auth: `${getBaseUrl(APIService.auth)}`,
   register: `${getBaseUrl(APIService.auth)}/register`,

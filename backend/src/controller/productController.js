@@ -85,47 +85,6 @@ class ProductController {
     })
     res.json(product)
   }
-  // [post] / product/new
-  async setNewProduct(req, res, next) {
-    try {
-      const product = await db.Product.create(req.body)
-      await req.files?.map((item) => {
-        db.ProductImage.create({
-          image: item.path,
-          ProductId: product.id,
-        })
-      })
-      res.status(200).json('SUCCESS')
-    } catch (err) {
-      res.status(401).json(err)
-    }
-  }
-  // [delete] /product/delete/:id
-  async deleteProducts(req, res) {
-    const productDeleteList = req.body
-    try {
-      const products = await db.Product.findAll({
-        where: {
-          id: {
-            [Op.or]: productDeleteList,
-          },
-        },
-      })
-      products.forEach(async (item) => {
-        await db.Product.update(
-          { state: 'Ngừng kinh doanh', deletedAt: Date.now() },
-          {
-            where: {
-              id: item.id,
-            },
-          },
-        )
-      })
-      res.status(200).json('Delete success')
-    } catch (err) {
-      res.status(401).json(err)
-    }
-  }
   // [get] /product/
   async index(req, res) {
     const {
@@ -168,6 +127,79 @@ class ProductController {
         },
       })
       res.json({ data: productList, amount })
+    } catch (err) {
+      res.status(401).json(err)
+    }
+  }
+
+  // [post] / product/new
+  async setNewProduct(req, res, next) {
+    try {
+      const product = await db.Product.create(req.body)
+      await req.files?.map((item) => {
+        db.ProductImage.create({
+          image: item.path,
+          ProductId: product.id,
+        })
+      })
+      res.status(200).json('SUCCESS')
+    } catch (err) {
+      res.status(401).json(err)
+    }
+  }
+  // [patch] /product/edit/:id
+  async editProduct(req, res, next) {
+    const { body, params, files } = req
+    const { oldImage } = body
+
+    try {
+      const product = await db.Product.findOne({
+        where: {
+          id: params.id,
+        },
+      })
+      await product.update(body)
+      await db.ProductImage.destroy({
+        where: {
+          ProductId: params.id,
+          id: { [Op.ne]: oldImage },
+        },
+        // force: true,
+      })
+      await files.map((item) => {
+        db.ProductImage.create({
+          image: item.path,
+          ProductId: product.id,
+        })
+      })
+      res.json('ok')
+    } catch (err) {
+      res.status(401)
+    }
+  }
+
+  // [delete] /product/delete/:id
+  async deleteProducts(req, res) {
+    const productDeleteList = req.body
+    try {
+      const products = await db.Product.findAll({
+        where: {
+          id: {
+            [Op.or]: productDeleteList,
+          },
+        },
+      })
+      products.forEach(async (item) => {
+        await db.Product.update(
+          { state: 'Ngừng kinh doanh', deletedAt: Date.now() },
+          {
+            where: {
+              id: item.id,
+            },
+          },
+        )
+      })
+      res.status(200).json('Delete success')
     } catch (err) {
       res.status(401).json(err)
     }

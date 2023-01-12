@@ -60,7 +60,9 @@ const ProductDetails = () => {
             <div className="content__image--main">
               <img
                 src={
-                  PRODUCT_IMG_LIST ? PRODUCT_IMG_LIST[currentImg].image : NO_IMG
+                  PRODUCT_IMG_LIST
+                    ? PRODUCT_IMG_LIST[currentImg]?.image
+                    : NO_IMG
                 }
                 alt=""
               />
@@ -71,7 +73,7 @@ const ProductDetails = () => {
                   <img
                     onClick={() => handleClickImage(idx)}
                     key={idx}
-                    src={item.image}
+                    src={item?.image}
                     alt=""
                   />
                 );
